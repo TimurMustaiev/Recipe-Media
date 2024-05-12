@@ -1,0 +1,116 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-info {
+    height: 40%;
+    width: 100%;
+
+    background-color: white;
+}
+
+.main-info img {
+    float: left;
+    display:inline-block;
+}
+
+.text-entry {
+    text-align: center;
+}
+
+.text-entry p {
+    text-align: left;
+}
+
+/* .main-info img, .text-entry {
+    margin-top: auto;
+    margin-bottom: auto;
+} */
+
+.ingredients {
+    text-align: center;
+}
+
+.ingredients table {
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+}
+
+.ingredients table th, .ingredients table td {
+    border: 1px solid black;
+}
+
+.description {
+    height: 60%;
+    width: 100%;
+
+    background-color: brown;
+
+    text-align: center;
+}
+
+.description h4 {
+    margin-bottom: 3%;
+}
+
+.recipe-step-number {
+    margin-right: 5%;
+}
+
+.recipe-step {
+    text-align: left;
+
+    margin-left: 2%;
+    margin-bottom: 4%;
+}
+
+.comment-section {
+    height: 40%;
+    width: 100%;
+
+    text-align: left;
+}
+
+.rating-block {
+    height: 10%;
+    width: 100%;
+    border: 1px solid black;
+}
+
+#star-rating-form {
+    height: 100%;
+    width: 20%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    /* background: transparent; */
+    background-color: pink;
+    direction: rtl;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#star-rating-form input[type="radio"] {
+    display: none;
+}
+
+#star-rating-form label {
+    display: block;
+    background: url('../../images/star_unchecked.png') no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+}
+
+#star-rating-form input[type="radio"]:checked ~ label {
+    background: url('../../images/star_checked.png') no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+}

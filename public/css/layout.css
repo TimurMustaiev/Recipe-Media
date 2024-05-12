@@ -1,0 +1,79 @@
+body {
+  overflow: auto;
+}
+
+header {
+  background-color: rgb(93, 220, 163);
+  height: 6vh;
+}
+
+.main-link {
+  height: 100%;
+  /* background-color: rgb(11, 167, 97); */
+  background-image: linear-gradient(to right, rgb(42, 207, 133) 90%, rgb(93, 220, 163));
+  color: white;
+  text-align: center;
+  font-size: 4vh;
+}
+
+.main-link a {
+  text-decoration: none;
+  color: white;
+}
+
+.user {
+  height: 100%;
+  background-color: rgb(93, 220, 163);
+  display: grid;
+  place-items: center;
+  font-size: 2.3vh;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.user a {
+  text-decoration: none;
+}
+
+.user-picture {
+  height: 5vh;
+
+  border-radius: 50%;
+}
+
+.user-menu-block {
+  list-style-type: none;
+}
+
+.content {
+  background-color: rgb(148, 216, 186);
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex: 0 1; /* This means the header and footer will not grow or shrink */
+}
+.content {
+  flex: 1 1; /* This allows the content to grow and fill the remaining space */
+   /* Add this to ensure content can scroll if it exceeds the available space */
+}
+
+.search-form {
+  width: 50%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.search-form input, .search-form button {
+  height: 5vh;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  border-radius: 0;
+}

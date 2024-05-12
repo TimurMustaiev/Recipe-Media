@@ -1,0 +1,49 @@
+.content {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-content {
+    width: 65%;
+    /* background-color: coral; */
+    text-align: center;
+}
+
+.recent_recipe {
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 3%;
+
+    width: 55%;
+
+    text-align: left;
+
+    border-radius: 3.5%;
+
+    border: 1px transparent black;
+}
+
+.recent_recipe img {
+    height: 65%;
+}
+
+.recipe-view {
+    
+    margin-bottom: 2%;
+}
+
+.popular-recipes-panel {
+    background-color: white;
+}
+
+#show-recipes {
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+footer {
+    height: 6vh;
+    background-color: blue;
+  }

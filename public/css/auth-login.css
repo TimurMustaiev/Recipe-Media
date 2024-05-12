@@ -1,0 +1,24 @@
+.action {
+    /* text-align: center; */
+    align-items: center;
+}
+
+/* .action button {
+    float: left;
+}
+
+.action span {
+    float: right;
+    font-size: small;
+} */
+
+.action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.action span {
+    font-size: small;
+    margin-left: 35%;
+}
