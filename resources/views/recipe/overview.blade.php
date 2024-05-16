@@ -69,8 +69,9 @@
         @endguest
         @auth
             <div>
-                <form action="">
-                    <input type="text" placeholder="Введіть текст коментаря">
+                <form action="{{ route('recipe_comments.store', $recipe->recipe_id) }}" method="POST">
+                    @csrf
+                    <input name="recipe_comment" type="text" placeholder="Введіть текст коментаря">
                     <button type="submit">Залишити</button> <!--поміняти текст на картинку-->
                 </form>
             </div>
@@ -89,6 +90,41 @@
                 <div class="comment-text">
                     {{ $recipe_comment->description }}
                 </div>
+                @if (Auth::user()->user_id == $recipe_comment->user_id)
+                    <div>
+                        <li class="navitem dropdown user-menu-block">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">тиць!</a>
+                            <ul class="dropdown-menu">
+                            <li><button data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe_comment->recipe_comment_id }}">Видалити</button></li>
+                            </ul>
+                        </li>
+                    </div>
+                    <div class="modal fade" id="deleteModal-{{ $recipe_comment->recipe_comment_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Видалення Коментаря</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Видалити цей Коментар назавжди"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Ні</button>
+                                    <form id="form_delete-{{ $recipe_comment->recipe_comment_id }}"
+                                        action="{{ route('recipe_comments.destroy', [$recipe->recipe_id, $recipe_comment->recipe_comment_id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" id="delete-{{ $recipe_comment->recipe_comment_id }}"
+                                        class="btn btn-primary">Видалити
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         @endforeach
     </div>

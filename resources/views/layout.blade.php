@@ -29,7 +29,7 @@
         @auth
           <a href="{{ route('users.show_profile', Auth::user()->user_id) }}">
             <img class="user-picture" src="{{ asset(Auth::user()->img_path) }}">
-          </a> <!--посилання на профіль-->
+          </a>
           <li class="navitem dropdown user-menu-block">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->nickname }}</a>
             <ul class="dropdown-menu">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Recipe;
 use App\Models\RecipeInGroup;
 use App\Models\RecipeRating;
+use App\Models\RecipeComment;
 use Illuminate\Support\Facades\Auth;
 
 //рейтинги порахувати
@@ -85,7 +86,6 @@ class RecipeController extends Controller
     
     public function store_rating_or_comment(Request $request, $recipe_id) { //recipe overview post
         $recipe_rating_value = $request->get('recipe_rating');
-        $recipe_comment = $request->get('recipe_comment');
         
         if ($recipe_rating_value != null) {
             $existing_recipe_rating = RecipeRating::where('user_id', Auth::user()->user_id)
