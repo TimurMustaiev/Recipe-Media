@@ -39,7 +39,7 @@
         @endforeach
     </div>
     <div class="rating-block">
-        <form action="{{ route('recipes.show_post', $recipe->recipe_id) }}" method="POST" id="star-rating-form">
+        <form action="{{ route('recipe_ratings.store', $recipe->recipe_id) }}" method="POST" id="star-rating-form">
             @csrf
             <input type="radio" id="star1" name="recipe_rating" value="1" />
             <label for="star1" title="1 stars"></label>

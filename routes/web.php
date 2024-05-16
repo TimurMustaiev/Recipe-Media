@@ -3,6 +3,7 @@
 use App\Http\Controllers\RecipeCommentController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RecipeGroupController;
+use App\Http\Controllers\RecipeRatingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,3 +45,5 @@ Route::get('recipes/create/2', [RecipeController::class, 'create_step_two'])->mi
 
 Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [RecipeCommentController::class, 'destroy'])->middleware('auth')->name('recipe_comments.destroy');
 Route::post('recipes/{recipe_id}/recipe_comments/store', [RecipeCommentController::class, 'store'])->middleware('auth')->name('recipe_comments.store');
+
+Route::post('recipes/{recipe_id}/recipe_ratings/store', [RecipeRatingController::class, 'store'])->middleware('auth')->name('recipe_ratings.store');
