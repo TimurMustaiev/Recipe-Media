@@ -35,7 +35,7 @@
             </div>
             @endforeach
         </div>
-        <a href="{{ route('recipes.show_user', $user_id) }}">Переглянути рецепти</a>
+        <a href="{{ route('recipes.show_user', $user_id) }}">Переглянути всі Рецепти</a>
     </div>
 
     <div class="recipe-group-block">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 @endforeach
-                <a href="{{ route('users.show_recipe_groups', $user_id) }}">Переглянути групи Рецептів</a>
+                <a href="{{ route('users.show_recipe_groups', $user_id) }}">Переглянути всі Групи Рецептів</a>
             @endif
         </div>
     </div>

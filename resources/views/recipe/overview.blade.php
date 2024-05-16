@@ -20,7 +20,7 @@
                     <th>Одиниці виміру</th>
                 </thead>
                 <tbody>
-                    @foreach ($recipe_ingredients as $recipe_ingredient)
+                    @foreach ($recipe->recipe_ingredients as $recipe_ingredient)
                         <tr>
                             <td>{{ $recipe_ingredient->name }}</td>
                             <td>{{ $recipe_ingredient->amount }}</td>
@@ -34,7 +34,7 @@
     </div>
     <div class="description">
         <h4>Кроки приготування</h4>
-        @foreach ($recipe_steps as $recipe_step)
+        @foreach ($recipe->recipe_steps as $recipe_step)
             <p class="recipe-step"><span class="recipe-step-number">{{ $recipe_step->ordinal_number }}.</span>{{ $recipe_step->description }}</p>
         @endforeach
     </div>
@@ -76,7 +76,7 @@
             </div>
         @endauth
         <!-- коментар власний або увійдіть -->
-        @foreach ($recipe_comments as $recipe_comment)
+        @foreach ($recipe->recipe_comments as $recipe_comment)
             <div class="recipe-comment">
                 <div class="user-info">
                     <a href="{{ route('users.show_profile', $recipe_comment->user->user_id) }}">

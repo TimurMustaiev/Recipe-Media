@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cuisine;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
-use App\Models\RecipeComment;
-use App\Models\RecipeGroup;
-use App\Models\RecipeIngredient;
 use App\Models\RecipeInGroup;
 use App\Models\RecipeRating;
-use App\Models\RecipeStep;
 use Illuminate\Support\Facades\Auth;
 
 //рейтинги порахувати
@@ -36,23 +32,12 @@ class RecipeController extends Controller
     }
 
     public function get_recipe($recipe_id) {
-        $recipe = Recipe::find($recipe_id);
+        $recipe = Recipe::with(['recipe_ingredients', 'recipe_steps', 'recipe_comments'])->find($recipe_id);
 
-        $recipe_ingredients = RecipeIngredient::where('recipe_id', $recipe_id)->get();
-
-        $recipe_steps = RecipeStep::where('recipe_id', $recipe_id)->get();
-
-        //коментарі
-        //подивитись про автоматичне добирання і чи можна його прибрати бо зайві ресурси
-        $recipe_comments = RecipeComment::where('recipe_id', $recipe_id)->get();
-
-        return view('recipe/overview')->with('recipe', $recipe)
-                                      ->with('recipe_ingredients', $recipe_ingredients)
-                                      ->with('recipe_steps', $recipe_steps)
-                                      ->with('recipe_comments', $recipe_comments);
+        return view('recipe/overview')->with('recipe', $recipe);
     }
 
-    public function get_recipes_from_group($recipe_group_id) {
+    public function get_recipes_from_group($user_id, $recipe_group_id) {
         $recipes = Recipe::whereIn('recipe_id', RecipeInGroup::where('recipe_group_id', $recipe_group_id)->get('recipe_id'))->get();
 
         return view('recipes')->with('recipes', $recipes);
@@ -83,7 +68,7 @@ class RecipeController extends Controller
 
         //процес створення шляху до зображення і його збереження (подумати що робити із імг якщо не заповняться всі форми)
         $recipe_img_name = time().'.'.$recipe_img->extension();
-        $recipe_img->move(public_path('images/profile_picture'), $recipe_img_name);
+        $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
         $recipe_img_path = 'images/profile_picture/{$recipe_img_name}';
 
         session()->put('step_1_data', array('recipe_name' => $recipe_name, 'recipe_img_path' => $recipe_img_path,
@@ -97,8 +82,8 @@ class RecipeController extends Controller
         dd('dsfsdf');
     }
 
-    //recipe overview post
-    public function store_rating_or_comment(Request $request, $recipe_id) {
+    
+    public function store_rating_or_comment(Request $request, $recipe_id) { //recipe overview post
         $recipe_rating_value = $request->get('recipe_rating');
         $recipe_comment = $request->get('recipe_comment');
         

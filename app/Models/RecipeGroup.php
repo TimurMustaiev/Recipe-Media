@@ -13,4 +13,9 @@ class RecipeGroup extends Model
 
     protected $table = 'recipe_groups';
     protected $fillable = array('name', 'user_id', 'img_path', 'description', 'access_modificator');
+
+    // public function recipes()
+    // {
+    //     return $this->belongsToMany(Recipe::class, 'recipes_in_group', 'recipe_group_id', 'recipe_id');
+    // }
 }

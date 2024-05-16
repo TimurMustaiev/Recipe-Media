@@ -10,17 +10,17 @@
     <div class="form-container row-5 col-4">
         <form action="{{ route('recipes.store_step_one') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <label for="recipe_name">Введіть назву рецепту</label>
-            <input type="text" id="recipe_name" name="recipe_name" placeholder="Назва Рецепту">
-            <label for="recipe_img">Оберіть головне фото рецепту</label>
+            <label for="recipe_name">Введіть назву Рецепту</label>
+            <input type="text" id="recipe_name" name="recipe_name" placeholder="Назва">
+            <label for="recipe_img">Оберіть головне фото Рецепту</label>
             <input type="file" id="recipe_img" name="recipe_img" accept="image/jpeg, image/png, image/jpg, image/bmp">
-            <label for="cuisine">Оберіть тип кухні рецепту</label>
+            <label for="cuisine">Оберіть тип кухні Рецепту</label>
             <select name="cuisine" id="cuisine">
                 @foreach ($cuisines as $cuisine)
                     <option value="{{ $cuisine->name }}">{{ $cuisine->name }}</option>
                 @endforeach
             </select>
-            <label for="recipe_description">Введіть короткий опис рецепту (необов'язково)</label>
+            <label for="recipe_description">Введіть короткий опис Рецепту (необов'язково)</label>
             <input type="text" id="recipe_description" name="recipe_description" placeholder="Опис Рецепту">
             <button type="submit">Далі</button>
         </form>
