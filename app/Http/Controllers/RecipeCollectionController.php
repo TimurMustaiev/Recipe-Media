@@ -20,6 +20,12 @@ class RecipeCollectionController extends Controller
                                     ->with('recipe_collections', $recipe_collections);
     }
 
+    public function get_recipes_from_collection($user_id, $recipe_collection_id) {
+        $recipes = RecipeCollection::find($recipe_collection_id)->recipes()->get();
+
+        return view('recipes')->with('recipes', $recipes);
+    }
+
     public function create($user_id) {
         return view('recipe-collection/create');
     }

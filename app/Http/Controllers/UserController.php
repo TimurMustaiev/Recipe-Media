@@ -49,11 +49,10 @@ class UserController extends Controller
     {        
         $user = User::find($user_id);
 
-        //З контролеру сутностей???
-        $recent_recipes = Recipe::where('user_id', $user_id)->take(2)->get();
+        $recent_recipes = $user->recipes()->latest()->take(2)->get();
 
-        $recent_recipe_collections = RecipeCollection::where(['user_id' => $user_id, 'access_modificator' => 'публічна'])->take(2)->get();
-        //-------------
+        $recent_recipe_collections = $user->recipe_collections()->where('access_modificator', 'публічна')->latest()->take(2)->get();
+
         return view('profile')->with('user', $user)
                               ->with('recipes', $recent_recipes)
                               ->with('recipe_collections', $recent_recipe_collections)

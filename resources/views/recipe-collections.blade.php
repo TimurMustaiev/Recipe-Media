@@ -1,12 +1,12 @@
 @extends('layout')
 <link rel="stylesheet" href="{{ asset('css/recipe-collections.css') }}">
-@section('tab-title', 'Групи Рецептів')
+@section('tab-title', 'Збірки Рецептів')
 @section('page-content')
     @foreach ($recipe_collections as $recipe_collection)
             <div class="recipe-collection-container">
                 <div class="card-body shadow-sm recipe-collection">
                     <h3>{{ $recipe_collection->name }}</h3>
-                    <img src="{{ asset($recipe_collection->img_path) }}" alt="Картинка групи">
+                    <img src="{{ asset($recipe_collection->img_path) }}" alt="Картинка збірки">
                     <br>
                     @if (isset($recipe_collection->description)) <!--css-->
                         <p class="right-align">{{ Illuminate\Support\Str::limit($recipe_collection->description, $limit = 120, $end = '...') }}</p>
@@ -27,12 +27,12 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="ModalLabel">Видалення Групи Рецептів</h5>
+                                        <h5 class="modal-title" id="ModalLabel">Видалення Збірки Рецептів</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Видалити Групу Рецептів "{{ $recipe_collection->name }}"?
+                                        Видалити Збірку Рецептів "{{ $recipe_collection->name }}"?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Ні</button>
@@ -53,6 +53,6 @@
             </div>
     @endforeach
     @if (Auth::user()->user_id == $user_id)
-        <a href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Групу Рецептів</a>
+        <a href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Збірку Рецептів</a>
     @endif        
 @endsection

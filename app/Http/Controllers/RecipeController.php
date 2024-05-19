@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Cuisine;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
-use App\Models\RecipeInCollection;
-use App\Models\RecipeRating;
-use App\Models\RecipeComment;
 use Illuminate\Support\Facades\Auth;
 
 //рейтинги порахувати
@@ -36,12 +33,6 @@ class RecipeController extends Controller
         $recipe = Recipe::with(['recipe_ingredients', 'recipe_steps', 'recipe_comments'])->find($recipe_id);
 
         return view('recipe/overview')->with('recipe', $recipe);
-    }
-
-    public function get_recipes_from_collection($user_id, $recipe_collection_id) {
-        $recipes = Recipe::whereIn('recipe_id', RecipeInCollection::where('recipe_collection_id', $recipe_collection_id)->get('recipe_id'))->get();
-
-        return view('recipes')->with('recipes', $recipes);
     }
 
     public function search_recipes(Request $request) {
