@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Recipe;
-use App\Models\RecipeGroup;
+use App\Models\RecipeCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,11 +52,11 @@ class UserController extends Controller
         //З контролеру сутностей???
         $recent_recipes = Recipe::where('user_id', $user_id)->take(2)->get();
 
-        $recent_recipe_groups = RecipeGroup::where(['user_id' => $user_id, 'access_modificator' => 'публічна'])->take(2)->get();
+        $recent_recipe_collections = RecipeCollection::where(['user_id' => $user_id, 'access_modificator' => 'публічна'])->take(2)->get();
         //-------------
         return view('profile')->with('user', $user)
                               ->with('recipes', $recent_recipes)
-                              ->with('recipe_groups', $recent_recipe_groups)
+                              ->with('recipe_collections', $recent_recipe_collections)
                               ->with('user_id', $user_id);
     }
 }

@@ -14,8 +14,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('recipe_groups', function (Blueprint $table) {
-            $table->id('recipe_group_id');
+        Schema::create('recipe_collections', function (Blueprint $table) {
+            $table->id('recipe_collection_id');
             $table->string('name', 50)->nullable(false);
             $table->foreignId('user_id')->constrained('users', 'user_id')->nullable(false);
             $table->string('img_path')->nullable(false);
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recipe_groups');
+        Schema::dropIfExists('recipe_collections');
     }
 };

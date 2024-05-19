@@ -38,25 +38,25 @@
         <a href="{{ route('recipes.show_user', $user_id) }}">Переглянути всі Рецепти</a>
     </div>
 
-    <div class="recipe-group-block">
+    <div class="recipe-collection-block">
         <h3>Групи Рецептів</h3>
-        <div class="recipe-group-list">
-            @if (count($recipe_groups) == 0)
+        <div class="recipe-collection-list">
+            @if (count($recipe_collections) == 0)
                 @if (Auth::user()->user_id == $user_id)
                     У вас ще немає груп Рецептів
-                    <a href="">Створити нову Групу</a> 
+                    <a href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Групу</a> 
                 @else
                     Цей користувач не має Груп Рецептів, які ви можете переглянути
                 @endif
             @else
-                @foreach ($recipe_groups as $recipe_group)
-                <div class="recipe-group-container">
-                    <div class="card-body shadow-sm recipe-group">
-                        <h4>{{ $recipe_group->name }}</h4>
-                        <img src="{{ asset($recipe_group->img_path) }}" alt="Картинка групи">
+                @foreach ($recipe_collections as $recipe_collection)
+                <div class="recipe-collection-container">
+                    <div class="card-body shadow-sm recipe-collection">
+                        <h4>{{ $recipe_collection->name }}</h4>
+                        <img src="{{ asset($recipe_collection->img_path) }}" alt="Картинка групи">
                         <br>
-                        @if (isset($recipe_group->description))
-                            <p class="left-align">{{ Illuminate\Support\Str::limit($recipe_group->description, $limit = 120, $end = '...') }}</p>
+                        @if (isset($recipe_collection->description))
+                            <p class="left-align">{{ Illuminate\Support\Str::limit($recipe_collection->description, $limit = 120, $end = '...') }}</p>
                         @else
                             <p>Без опису</p>
                             <br>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 @endforeach
-                <a href="{{ route('users.show_recipe_groups', $user_id) }}">Переглянути всі Групи Рецептів</a>
+                <a href="{{ route('users.show_recipe_collections', $user_id) }}">Переглянути всі Групи Рецептів</a>
             @endif
         </div>
     </div>

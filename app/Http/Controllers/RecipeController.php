@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cuisine;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
-use App\Models\RecipeInGroup;
+use App\Models\RecipeInCollection;
 use App\Models\RecipeRating;
 use App\Models\RecipeComment;
 use Illuminate\Support\Facades\Auth;
@@ -38,8 +38,8 @@ class RecipeController extends Controller
         return view('recipe/overview')->with('recipe', $recipe);
     }
 
-    public function get_recipes_from_group($user_id, $recipe_group_id) {
-        $recipes = Recipe::whereIn('recipe_id', RecipeInGroup::where('recipe_group_id', $recipe_group_id)->get('recipe_id'))->get();
+    public function get_recipes_from_collection($user_id, $recipe_collection_id) {
+        $recipes = Recipe::whereIn('recipe_id', RecipeInCollection::where('recipe_collection_id', $recipe_collection_id)->get('recipe_id'))->get();
 
         return view('recipes')->with('recipes', $recipes);
     }

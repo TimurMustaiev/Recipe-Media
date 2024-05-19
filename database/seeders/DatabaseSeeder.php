@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
             RecipeStepSeeder::class,
             RecipeCommentSeeder::class,
             RecipeRatingSeeder::class,
-            RecipeGroupSeeder::class,
-            RecipeInGroupSeeder::class
+            RecipeCollectionSeeder::class,
+            RecipeInCollectionSeeder::class
         ]);
     }
 }

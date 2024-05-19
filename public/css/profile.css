@@ -46,7 +46,7 @@ body {
     text-align: center;
 }
 
-.recipe-list, .recipe-group-list {
+.recipe-list, .recipe-collection-list {
     width: 100%;
 
     display: flex;
@@ -55,15 +55,15 @@ body {
     justify-content: center;
 }
 
-.recipe-container, .recipe-group-container {
+.recipe-container, .recipe-collection-container {
     width: 42.5%;
 }
 
-.recipe-container img, .recipe-group-container img {
+.recipe-container img, .recipe-collection-container img {
     height: 30%;
 }
 
-.recipe-group-block {
+.recipe-collection-block {
     height: 100%;
     width: 50%;
 
@@ -72,6 +72,6 @@ body {
     text-align: center;
 }
 
-.recipe, .recipe-group {
+.recipe, .recipe-collection {
     border-radius: 6%;
 }
