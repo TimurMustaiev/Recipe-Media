@@ -2,5 +2,81 @@
 
 @section('tab-title', 'Створення рецепту')
 @section('page-content')
-<h2>2</h2>
+<div class="container-fluid vw-100 vh-100 row align-items-center d-flex flex-column">
+    <div class="text-center col-4">
+        <h2>Створіть новий вегетаріанський шедевр!</h2>
+        <p>Крок 2</p>
+    </div>
+    <div class="form-container row-5 col-4">
+        <form action="{{ route('recipes.store_step_two') }}" method="POST">
+            @csrf
+            <label for="meal_type">Оберіть тип страви</label>
+            <select id="meal_type" name="meal_type">
+                <option value="головна страва">Головна Страва</option>
+                <option value="закуска">Закуска</option>
+                <option value="десерт">Десерт</option>
+                <option value="напій">Напій</option>
+            </select>
+            <div>
+                <label for="recipe_ingredient">Введіть Інгрідієнт</label>
+                <input id="recipe_ingredient" name="recipe_ingredient" type="text" placeholder="Інгрідієнт">
+                <label for="amount">Введіть кількість продукту</label>
+                <input id="amount" name="amount" type="number" min="0">
+                <label for="unit">Оберіть одиницю вимірювання</label>
+                <select id="unit" name="unit">
+                    <option value="г">Грам</option>
+                    <option value="кг">Кілограм</option>
+                    <option value="мл">Мілілітр</option>
+                    <option value="л">Літр</option>
+                    <option value="ст.л.">Столова Ложка</option>
+                    <option value="ч.л.">Чайна Ложка</option>
+                    <option value="шт.">Штука</option>
+                </select>
+            </div>
+            <div id="entered_ingredients" class="entered_ingredients">
+            </div>
+
+            <input type="hidden" id="ingredients_array" name="ingredients_array" value="">
+            <button type="button" onclick="addIngredient()">Додати</button>
+            <button type="submit" onclick="submitForm()">Далі</button>
+        </form>
+    </div>
+</div>
+<script>
+    var ingredientsArray = [];
+
+    function addIngredient() {
+        var nameInput = document.getElementById('recipe_ingredient');
+        var amountInput = document.getElementById('amount');
+        var unitInput = document.getElementById('unit');
+
+        var name = nameInput.value;
+        var amount = amountInput.value;
+        var unit = unitInput.value;
+
+        if (name && amount && unit) {
+            var ingredient = {
+                name: name,
+                amount: amount,
+                unit: unit
+            };
+
+            ingredientsArray.push(ingredient);
+        }
+
+        var enteredIngredients = document.getElementById('entered_ingredients');
+        var ingredientContainer = document.createElement('div');
+        ingredientContainer.innerHTML = name + ' ' + amount + ' ' + unit;
+        enteredIngredients.appendChild(ingredientContainer);
+        enteredIngredients.appendChild(document.createElement('br'));
+
+        nameInput.value = '';
+        amountInput.value = '';
+        unitInput.selectedIndex = 0;
+    }
+
+    function submitForm() {
+        document.getElementById('ingredients_array').value = JSON.stringify(ingredientsArray);
+    }
+</script>
 @endsection

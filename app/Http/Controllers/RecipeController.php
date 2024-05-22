@@ -51,6 +51,7 @@ class RecipeController extends Controller
     }
 
     public function store_step_one(Request $request) {
+        //додати очищення всіх змінних рецепту(кроків) в сесії
         $recipe_name = $request->get('recipe_name');
         $recipe_img = $request->file('recipe_img');
         $cuisine = $request->get('recipe_cuisine');
@@ -72,5 +73,18 @@ class RecipeController extends Controller
 
     public function create_step_two() {
         return view('recipe/create_step_two');
+    }
+
+    public function store_step_two(Request $request) {
+        $meal_type = $request->get('meal_type');
+        $recipe_ingredients = $request->get('ingredients_array');
+
+        session()->put('step_2_data', array('meal_type' => $meal_type, 'recipe_ingredients' => $recipe_ingredients));
+
+        return redirect(route('recipes.create_step_three'));
+    }
+
+    public function create_step_three() {
+        return view('recipe/create_step_three');
     }
 }
