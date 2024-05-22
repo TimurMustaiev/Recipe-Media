@@ -8,14 +8,56 @@
         <p>Крок 3</p>
     </div>
     <div class="form-container row-5 col-4">
-        <form action="" method="POST">
+        <form action="{{ route('recipes.store_step_three') }}" method="POST">
             @csrf
-            <label for="recipe_step">Опишіть Крок</label>
-            <textarea id="recipe_step" name="recipe_step">
-            </textarea>
-            <button type="button" onclick="">Додати</button>
-            <button type="submit">Далі</button>
+            <div>
+                <label for="description">Опишіть Крок Рецепту</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <div id="entered_steps" class="entered_steps">
+
+            </div>
+
+            <input type="hidden" id="steps_array" name="steps_array" value="">
+            <button type="button" onclick="addStep()">Додати</button>
+            <button type="submit" onclick="submitForm()">Створити Рецепт</button>
         </form>
     </div>
 </div>
+<script>
+    var recipeSteps = [];
+    var stepCount = 1;
+
+    function addStep() {
+        var descriptionInput = document.getElementById('description');
+
+        var description = descriptionInput.value;
+
+        if (description) {
+            var recipeStep = {
+                ordinalNumber: stepCount,
+                description: description
+            };
+
+            recipeSteps.push(recipeStep);
+        }
+
+        var enteredSteps = document.getElementById('entered_steps');
+        var stepContainer = document.createElement('div');
+        stepContainer.innerHTML = `${stepCount} - ${description.substring(0, 20)}`;
+        if(description.length >= 20) {
+            stepContainer.innerHTML += '...';
+        }
+
+        enteredSteps.appendChild(stepContainer);
+        enteredSteps.appendChild(document.createElement('br'));
+
+        stepCount++;
+        descriptionInput.value = '';
+    }
+
+    function submitForm() {
+        document.getElementById('steps_array').value = JSON.stringify(recipeSteps);
+    }
+</script>
 @endsection

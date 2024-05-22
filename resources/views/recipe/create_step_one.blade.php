@@ -17,7 +17,7 @@
             <label for="cuisine">Оберіть тип кухні Рецепту</label>
             <select name="cuisine" id="cuisine">
                 @foreach ($cuisines as $cuisine)
-                    <option value="{{ $cuisine->name }}">{{ $cuisine->name }}</option>
+                    <option value="{{ $cuisine->cuisine_id }}">{{ $cuisine->name }}</option>
                 @endforeach
             </select>
             <label for="recipe_description">Введіть короткий опис Рецепту (необов'язково)</label>

@@ -29,7 +29,6 @@ class RecipeFactory extends Factory
             'cuisine_id'=>1,
             'meal_type'=>'головна страва',
             'description'=>$this->faker->realText(),
-            'creation_datetime'=>$this->faker->date(),
             'img_path'=>'images/recipe_picture/recipe_1.jpg'
         ];
     }

@@ -49,9 +49,9 @@ class UserController extends Controller
     {        
         $user = User::find($user_id);
 
-        $recent_recipes = $user->recipes()->latest()->take(2)->get();
+        $recent_recipes = $user->recipes()->latest('updated_at')->take(2)->get();
 
-        $recent_recipe_collections = $user->recipe_collections()->where('access_modificator', 'публічна')->latest()->take(2)->get();
+        $recent_recipe_collections = $user->recipe_collections()->where('access_modificator', 'публічна')->latest('updated_at')->take(2)->get();
 
         return view('profile')->with('user', $user)
                               ->with('recipes', $recent_recipes)

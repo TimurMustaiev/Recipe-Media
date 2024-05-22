@@ -12,7 +12,7 @@ class Recipe extends Model
     protected $primaryKey = 'recipe_id';
 
     protected $table = 'recipes';
-    protected $fillable = array('name', 'country_kitchen_id', 'user_id', 'description', 'creation_datetime', 'img_path');
+    protected $fillable = array('name', 'country_kitchen_id', 'user_id', 'description', 'img_path');
 
     // public function groups()
     // {

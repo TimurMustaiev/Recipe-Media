@@ -43,7 +43,7 @@
     </div>
 </div>
 <script>
-    var ingredientsArray = [];
+    var recipeIngredients = [];
 
     function addIngredient() {
         var nameInput = document.getElementById('recipe_ingredient');
@@ -55,13 +55,13 @@
         var unit = unitInput.value;
 
         if (name && amount && unit) {
-            var ingredient = {
+            var recipeIngredient = {
                 name: name,
                 amount: amount,
                 unit: unit
             };
 
-            ingredientsArray.push(ingredient);
+            recipeIngredients.push(recipeIngredient);
         }
 
         var enteredIngredients = document.getElementById('entered_ingredients');
@@ -76,7 +76,7 @@
     }
 
     function submitForm() {
-        document.getElementById('ingredients_array').value = JSON.stringify(ingredientsArray);
+        document.getElementById('ingredients_array').value = JSON.stringify(recipeIngredients);
     }
 </script>
 @endsection

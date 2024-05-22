@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cuisine;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
+use App\Models\RecipeIngredient;
+use App\Models\RecipeStep;
 use Illuminate\Support\Facades\Auth;
 
 //рейтинги порахувати
@@ -12,19 +14,19 @@ use Illuminate\Support\Facades\Auth;
 class RecipeController extends Controller
 {
     public function get_recent_recipes() { //змінити назву
-        $recent_recipes = Recipe::orderBy('creation_datetime', 'desc')->take(3)->get();
+        $recent_recipes = Recipe::latest('updated_at')->take(3)->get();
 
         return view('main')->with('recent_recipes', $recent_recipes);
     }
 
     public function get_all_recipes() {
-        $recipes = Recipe::orderBy('creation_datetime', 'desc')->get();
+        $recipes = Recipe::latest('updated_at')->get();
 
         return view('recipes')->with('recipes', $recipes);
     }
 
     public function get_user_recipes($user_id) {
-        $recipes = Recipe::where('user_id', $user_id)->orderBy('creation_datetime', 'desc')->get();
+        $recipes = Recipe::where('user_id', $user_id)->latest('updated_at')->get();
 
         return view('recipes')->with('recipes', $recipes);
     }
@@ -51,10 +53,14 @@ class RecipeController extends Controller
     }
 
     public function store_step_one(Request $request) {
-        //додати очищення всіх змінних рецепту(кроків) в сесії
+        if(session()->has('step_1_data'))
+            session()->forget('step_1_data');
+        if(session()->has('step_1_data'))
+            session()->forget('step_2_data');
+
         $recipe_name = $request->get('recipe_name');
         $recipe_img = $request->file('recipe_img');
-        $cuisine = $request->get('recipe_cuisine');
+        $cuisine_id = $request->get('cuisine');
         $recipe_meal_type = $request->get('recipe_meal_type');
         $recipe_description = $request->get('recipe_description');
         $user_id = Auth::user()->user_id;
@@ -62,11 +68,11 @@ class RecipeController extends Controller
         //процес створення шляху до зображення і його збереження (подумати що робити із імг якщо не заповняться всі форми)
         $recipe_img_name = time().'.'.$recipe_img->extension();
         $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
-        $recipe_img_path = 'images/profile_picture/{$recipe_img_name}';
+        $recipe_img_path = "images/recipe_picture/{$recipe_img_name}";
 
-        session()->put('step_1_data', array('recipe_name' => $recipe_name, 'recipe_img_path' => $recipe_img_path,
-                    'recipe_meal_type' => $recipe_meal_type, 'cuisine' => $cuisine,
-                    'recipe_description' => $recipe_description, 'user_id' => $user_id));
+        session()->put('step_1_data', array('name' => $recipe_name, 'img_path' => $recipe_img_path,
+                    'meal_type' => $recipe_meal_type, 'cuisine_id' => $cuisine_id,
+                    'description' => $recipe_description));
 
         return redirect(route('recipes.create_step_two'));
     }
@@ -86,5 +92,41 @@ class RecipeController extends Controller
 
     public function create_step_three() {
         return view('recipe/create_step_three');
+    }
+
+    public function store_step_three(Request $request) {
+        $recipe_steps = json_decode($request->get('steps_array'), true);
+        $step_1_data = session()->get('step_1_data');
+        $step_2_data = session()->get('step_2_data');
+
+        $recipe = new Recipe();
+        $recipe->name = $step_1_data['name'];
+        $recipe->user_id = Auth::user()->user_id;
+        $recipe->cuisine_id = $step_1_data['cuisine_id'];
+        $recipe->meal_type = $step_2_data['meal_type'];
+        $recipe->description = $step_1_data['description'];
+        $recipe->img_path = $step_1_data['img_path'];
+        $recipe->save();
+
+        foreach(json_decode($step_2_data['recipe_ingredients'], true) as $recipe_ingredient_data) {
+            $recipe_ingredient = new RecipeIngredient();
+            $recipe_ingredient->recipe_id = $recipe->recipe_id;
+            $recipe_ingredient->name = $recipe_ingredient_data['name'];
+            $recipe_ingredient->amount = $recipe_ingredient_data['amount'];
+            $recipe_ingredient->unit = $recipe_ingredient_data['unit'];
+        
+            $recipe_ingredient->save();
+        }
+
+        foreach($recipe_steps as $recipe_step_data) {
+            $recipe_step = new RecipeStep();
+            $recipe_step->recipe_id = $recipe->recipe_id;
+            $recipe_step->ordinal_number = $recipe_step_data['ordinalNumber'];
+            $recipe_step->description = $recipe_step_data['description'];
+
+            $recipe_step->save();
+        }
+
+        return redirect(route('recipes.show', $recipe->recipe_id));
     }
 }

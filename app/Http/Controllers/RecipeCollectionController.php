@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 class RecipeCollectionController extends Controller
 {
     public function get_user_recipe_collections($user_id) {
-        $recipe_collections = RecipeCollection::where('user_id', $user_id)->get();
+        $recipe_collections = RecipeCollection::where('user_id', $user_id)->latest('updated_at')->get();
         
         if (Auth::user()->user_id != $user_id) {
             $recipe_collections = $recipe_collections->where('access_modificator', 'публічна');

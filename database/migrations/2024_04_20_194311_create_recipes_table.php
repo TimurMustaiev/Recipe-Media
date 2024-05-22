@@ -22,7 +22,6 @@ return new class extends Migration
             //тип дієти?
             $table->enum('meal_type', ['головна страва', 'закуска', 'десерт', 'напій'])->nullable(false);
             $table->string('description', 500)->nullable(true);
-            $table->dateTime('creation_datetime')->nullable(false);
             $table->string('img_path')->nullable(false);
             $table->timestamps();
         });
