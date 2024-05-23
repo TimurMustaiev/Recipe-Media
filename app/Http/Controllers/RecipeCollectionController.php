@@ -88,7 +88,6 @@ class RecipeCollectionController extends Controller
         if(File::exists($recipe_collection->img_path)) //при роботі з public
             File::delete($recipe_collection->img_path);
         $recipe_collection->delete();
-        $recipe_collection->delete();
 
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
     }

@@ -8,8 +8,7 @@ use App\Models\Recipe;
 use App\Models\RecipeIngredient;
 use App\Models\RecipeStep;
 use Illuminate\Support\Facades\Auth;
-
-//рейтинги порахувати
+use Illuminate\Support\Facades\File;
 
 class RecipeController extends Controller
 {
@@ -28,7 +27,8 @@ class RecipeController extends Controller
     public function get_user_recipes($user_id) {
         $recipes = Recipe::where('user_id', $user_id)->latest('updated_at')->get();
 
-        return view('recipes')->with('recipes', $recipes);
+        return view('recipes_user')->with('recipes', $recipes)
+                                   ->with('user_id', $user_id);
     }
 
     public function get_recipe($recipe_id) {
@@ -128,5 +128,14 @@ class RecipeController extends Controller
         }
 
         return redirect(route('recipes.show', $recipe->recipe_id));
+    }
+
+    public function destroy($recipe_id) {
+        $recipe = Recipe::find($recipe_id);
+        if(File::exists($recipe->img_path))
+            File::delete($recipe->img_path);
+        $recipe->delete();
+
+        return redirect(route('recipes.show_user', Auth::user()->user_id));
     }
 }

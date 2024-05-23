@@ -19,8 +19,8 @@
                         <button class="btn-btn recipe-view">Переглянути</button>
                     </a>
                     @if (Auth::user()->user_id == $user_id)
-                        <a href="{{ route('recipe_collections.edit', [$user_id, $recipe_collection->recipe_collection_id]) }}">
-                            <button class="btn-btn recipe-view">Редагувати</button>
+                        <a class="btn" href="{{ route('recipe_collections.edit', [$user_id, $recipe_collection->recipe_collection_id]) }}">
+                            Редагувати
                         </a>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe_collection->recipe_collection_id }}">Видалити</button>
                         <div class="modal fade" id="deleteModal-{{ $recipe_collection->recipe_collection_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">
@@ -41,8 +41,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" id="delete-{{ $recipe_collection->recipe_collection_id }}"
-                                            class="btn btn-primary">Видалити
-                                            </button>
+                                            class="btn btn-primary">Видалити</button>
                                         </form>
                                     </div>
                                 </div>
