@@ -32,7 +32,7 @@ Route::get('users/{user_id}/recipe-collections/create', [RecipeCollectionControl
 Route::post('users/{user_id}/recipe-collections/store', [RecipeCollectionController::class, 'store'])->middleware('auth')->name('recipe_collections.store');
 Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}/edit', [RecipeCollectionController::class, 'edit'])->middleware('auth')->name('recipe_collections.edit');
 Route::patch('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'update'])->middleware('auth')->name('recipe_collections.update');
-Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'get_recipes_from_collection'])->name('recipe_collections.show_recipes');
+Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'get_recipe_collection'])->name('recipe_collections.show_recipes');
 Route::delete('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'destroy'])->middleware('auth')->name('recipe_collections.destroy');
 
 Route::get('recipes', [RecipeController::class, 'get_all_recipes'])->name('recipes.show_all');

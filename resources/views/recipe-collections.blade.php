@@ -15,8 +15,8 @@
                         <br>
                     @endif
                     <!--спробувати різні значення довжини тексту-->
-                    <a href="{{ route('recipe_collections.show_recipes', [$user_id, $recipe_collection->recipe_collection_id]) }}">
-                        <button class="btn-btn recipe-view">Переглянути</button>
+                    <a class="btn" href="{{ route('recipe_collections.show_recipes', [$user_id, $recipe_collection->recipe_collection_id]) }}">
+                        Переглянути
                     </a>
                     @if (Auth::user()->user_id == $user_id)
                         <a class="btn" href="{{ route('recipe_collections.edit', [$user_id, $recipe_collection->recipe_collection_id]) }}">

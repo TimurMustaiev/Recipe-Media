@@ -27,7 +27,7 @@ class RecipeController extends Controller
     public function get_user_recipes($user_id) {
         $recipes = Recipe::where('user_id', $user_id)->latest('updated_at')->get();
 
-        return view('recipes_user')->with('recipes', $recipes)
+        return view('recipes-user')->with('recipes', $recipes)
                                    ->with('user_id', $user_id);
     }
 

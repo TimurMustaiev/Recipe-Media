@@ -20,10 +20,11 @@ class RecipeCollectionController extends Controller
                                     ->with('recipe_collections', $recipe_collections);
     }
 
-    public function get_recipes_from_collection($user_id, $recipe_collection_id) {
-        $recipes = RecipeCollection::find($recipe_collection_id)->recipes()->get();
+    public function get_recipe_collection($user_id, $recipe_collection_id) {
+        $recipe_collection = RecipeCollection::with('recipes')->find($recipe_collection_id);
 
-        return view('recipes')->with('recipes', $recipes);
+        return view('recipe-collection/overview')->with('recipe_collection', $recipe_collection)
+                                                 ->with('user_id', $user_id);
     }
 
     public function create($user_id) {
@@ -90,5 +91,13 @@ class RecipeCollectionController extends Controller
         $recipe_collection->delete();
 
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
+    }
+
+    public function add_recipe() {
+
+    }
+
+    public function store_recipe() {
+        
     }
 }
