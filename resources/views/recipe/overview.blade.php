@@ -71,7 +71,10 @@
             <div>
                 <form action="{{ route('recipe_comments.store', $recipe->recipe_id) }}" method="POST">
                     @csrf
-                    <input name="recipe_comment" type="text" placeholder="Введіть текст коментаря">
+                    <textarea id="recipe_comment" name="recipe_comment" class="form-control @error('recipe_comment') is-invalid @enderror" placeholder="Введіть текст коментаря"></textarea>
+                    @error('recipe_comment')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <button type="submit">Залишити</button> <!--поміняти текст на картинку-->
                 </form>
             </div>

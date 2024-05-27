@@ -6,6 +6,7 @@ use App\Models\RecipeCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class RecipeCollectionController extends Controller
 {
@@ -32,6 +33,16 @@ class RecipeCollectionController extends Controller
     }
 
     public function store(Request $request, $user_id) {
+        $rules = ['name' => 'required', 'access_modificator' => 'required', 'img' => 'required|image'];
+        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Колекції не може бути пустою',
+                                                               'access_modificator' => 'Тип видимості Колекції не обрано',
+                                                               'img.required' => 'Зображення обкладинки Колекції не обрано',
+                                                               'img.image' => 'Обраний файл не є зображенням']);
+        if ($validator->fails()) {
+            return redirect(route('recipe_collections.create', Auth::user()->user_id))->withErrors($validator)
+                                                                                          ->withInput();
+        }
+
         $name = $request->get('name');
         $user_id = Auth::user()->user_id;
         $img = $request->file('img');
@@ -60,6 +71,16 @@ class RecipeCollectionController extends Controller
     }
 
     public function update(Request $request, $user_id, $recipe_collection_id) {
+        $rules = ['name' => 'required', 'access_modificator' => 'required', 'img' => 'required|image'];
+        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Колекції не може бути пустою',
+                                                               'access_modificator' => 'Тип видимості Колекції не обрано',
+                                                               'img.required' => 'Зображення обкладинки Колекції не обрано',
+                                                               'img.image' => 'Обраний файл не є зображенням']);
+        if ($validator->fails()) {
+            return redirect(route('recipe_collections.edit', [Auth::user()->user_id, $recipe_collection_id]))->withErrors($validator)
+                                                                                                             ->withInput();
+        }
+        
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
         if ($request->hasFile('img')) {
             $img = $request->file('img');

@@ -11,24 +11,31 @@
             @csrf
             @method('PATCH')
             <label for="name">Введіть нову назву Групи Рецептів</label>
-            <input type="text" id="name" name="name" placeholder="Назва" value="{{ $recipe_collection->name }}">
+            <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Назва" value="{{ old('name') ? old('name') : $recipe_collection->name }}">
+            @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             <label for="img">Оберіть нову обкладинку Групи Рецептів</label>
-            <input type="file" id="img" name="img" accept="image/jpeg, image/png, image/jpg, image/bmp">
-            <label for="description">Введіть короткий опис Групи Рецептів (необов'язково)</label>
+            <input type="file" id="img" name="img" class="form-control @error('img') is-invalid @enderror">
+            @error('img')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            <label for="description">Введіть новий короткий опис Групи Рецептів (необов'язково)</label>
             <br>
-            <textarea id="description" name="description" placeholder="Опис Групи">
-              {{ $recipe_collection->description }}
-            </textarea>
+            <textarea id="description" name="description" class="form-control" placeholder="Опис Групи">{{ old('description') ? old('description') : $recipe_collection->description }}</textarea>
             <br>
             <label>Оберіть нову видимість Вашої Групи Рецептів</label>
             <br>
-            <input type="radio" id="public_access_modificator" name="access_modificator" value="публічна">
+            <input type="radio" id="public_access_modificator" name="access_modificator" class="form-check-input" value="публічна">
             <label for="public_access_modificator">публічна (бачитимуть всі)</label>
             <br>
-            <input type="radio" id="private_access_modificator" name="access_modificator" value="публічна">
+            <input type="radio" id="private_access_modificator" name="access_modificator" class="form-check-input" value="публічна">
             <label for="private_access_modificator">приватна (бачитимете лише Ви)</label>
+            @error('access_modificator')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             <br>
-            <button type="submit">Зберегти зміни</button>
+            <button class="btn btn-primary" type="submit">Зберегти зміни</button>
         </form>
     </div>
 </div>

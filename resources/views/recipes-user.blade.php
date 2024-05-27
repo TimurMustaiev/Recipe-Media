@@ -11,6 +11,7 @@
                     <p class="left-align">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 120, $end = '...') }}</p>
                     <!--спробувати різні значення довжини тексту-->
                     <a class="btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">Переглянути</a>
+                    <a class="btn" href="">Редагувати</a>
                     @if (Auth::user()->user_id == $user_id)
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe->recipe_id }}">Видалити</button>
                         <div class="modal fade" id="deleteModal-{{ $recipe->recipe_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">

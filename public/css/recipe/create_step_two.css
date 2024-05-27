@@ -1,0 +1,19 @@
+.form-container {
+    
+}
+
+.form-container form {
+    height: 100%;
+    width: 100%;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.new-ingredient-field {
+    height: fit-content;
+    width: fit-content;
+    background-color: pink;
+}

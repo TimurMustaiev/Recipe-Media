@@ -12,10 +12,12 @@
             @csrf
             <div>
                 <label for="description">Опишіть Крок Рецепту</label>
-                <textarea id="description" name="description"></textarea>
+                <textarea id="description" name="description" class="form-control"></textarea>
             </div>
             <div id="entered_steps" class="entered_steps">
-
+                @error('steps_array')
+                    {{ $message }}
+                @enderror
             </div>
 
             <input type="hidden" id="steps_array" name="steps_array" value="">

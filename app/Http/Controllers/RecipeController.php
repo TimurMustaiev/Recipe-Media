@@ -9,6 +9,7 @@ use App\Models\RecipeIngredient;
 use App\Models\RecipeStep;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {
@@ -53,6 +54,21 @@ class RecipeController extends Controller
     }
 
     public function store_step_one(Request $request) {
+        $rules = ['recipe_name' => 'required',
+                  'recipe_img' => 'required|image',
+                  'cuisine' => 'required',
+                  'recipe_meal_type' => 'required'];
+        $validator = Validator::make($request->all(), $rules,
+                                     ['recipe_name.required' => 'Назва Рецепту не може бути пустою',
+                                      'recipe_img.required' => 'Зображення обкладинки Рецепту не обрано',
+                                      'recipe_img.image' => 'Обраний файл не є зображенням',
+                                      'cuisine.required' => 'Кухню Рецепту не обрано',
+                                      'recipe_meal_type.required' => 'Тип страви не обрано']);
+        if ($validator->fails()) {
+            return redirect(route('recipes.create_step_one'))->withErrors($validator)
+                                                             ->withInput();
+        }
+
         if(session()->has('step_1_data'))
             session()->forget('step_1_data');
         if(session()->has('step_1_data'))
@@ -63,7 +79,7 @@ class RecipeController extends Controller
         $cuisine_id = $request->get('cuisine');
         $recipe_meal_type = $request->get('recipe_meal_type');
         $recipe_description = $request->get('recipe_description');
-        $user_id = Auth::user()->user_id;
+        // $user_id = Auth::user()->user_id;
 
         //процес створення шляху до зображення і його збереження (подумати що робити із імг якщо не заповняться всі форми)
         $recipe_img_name = time().'.'.$recipe_img->extension();
@@ -82,10 +98,24 @@ class RecipeController extends Controller
     }
 
     public function store_step_two(Request $request) {
-        $meal_type = $request->get('meal_type');
-        $recipe_ingredients = $request->get('ingredients_array');
+        $recipe_ingredients = json_decode($request->get('ingredients_array'), true);
 
-        session()->put('step_2_data', array('meal_type' => $meal_type, 'recipe_ingredients' => $recipe_ingredients));
+        $rules = ['ingredients_array' => ['required',
+                                          function ($attribute, $value, $fail) {
+                                              $decodedValue = json_decode($value);
+                                              if (empty($decodedValue)) {
+                                                  $fail('Не введено жодного Інгрідієнту');
+                                              }
+                                          }]];
+        //розібратись
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect(route('recipes.create_step_two'))->withErrors($validator)
+                                                             ->withInput();
+        }
+
+        session()->put('step_2_data', array('recipe_ingredients' => $recipe_ingredients));
 
         return redirect(route('recipes.create_step_three'));
     }
@@ -99,16 +129,31 @@ class RecipeController extends Controller
         $step_1_data = session()->get('step_1_data');
         $step_2_data = session()->get('step_2_data');
 
+        $rules = ['steps_array' => ['required',
+                                          function ($attribute, $value, $fail) {
+                                              $decodedValue = json_decode($value);
+                                              if (empty($decodedValue)) {
+                                                  $fail('Не введено жодного Кроку');
+                                              }
+                                          }]];
+        //розібратись
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect(route('recipes.create_step_three'))->withErrors($validator)
+                                                               ->withInput();
+        }
+
         $recipe = new Recipe();
         $recipe->name = $step_1_data['name'];
         $recipe->user_id = Auth::user()->user_id;
         $recipe->cuisine_id = $step_1_data['cuisine_id'];
-        $recipe->meal_type = $step_2_data['meal_type'];
+        $recipe->meal_type = $step_1_data['meal_type'];
         $recipe->description = $step_1_data['description'];
         $recipe->img_path = $step_1_data['img_path'];
         $recipe->save();
 
-        foreach(json_decode($step_2_data['recipe_ingredients'], true) as $recipe_ingredient_data) {
+        foreach($step_2_data['recipe_ingredients'] as $recipe_ingredient_data) {
             $recipe_ingredient = new RecipeIngredient();
             $recipe_ingredient->recipe_id = $recipe->recipe_id;
             $recipe_ingredient->name = $recipe_ingredient_data['name'];
