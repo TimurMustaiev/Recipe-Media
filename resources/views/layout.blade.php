@@ -30,14 +30,14 @@
           <a href="{{ route('users.show_profile', Auth::user()->user_id) }}">
             <img class="user-picture" src="{{ asset(Auth::user()->img_path) }}">
           </a>
-          <li class="navitem dropdown user-menu-block">
+          <div class="navitem dropdown user-menu-block">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->nickname }}</a>
             <ul class="dropdown-menu">
               <li><a href="{{ route('users.show_profile', Auth::user()->user_id) }}">Профіль</a></li>
               <li><a href="{{ route('recipes.create_step_one') }}">Створити рецепт</a></li>
               <li><a href="{{ route('users.log_out') }}">Вийти</a></li>
             </ul>
-          </li>
+          </div>
         @endauth
       </div>
     </header>

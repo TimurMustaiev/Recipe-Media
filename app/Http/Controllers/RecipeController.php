@@ -65,7 +65,7 @@ class RecipeController extends Controller
                                       'cuisine.required' => 'Кухню Рецепту не обрано',
                                       'recipe_meal_type.required' => 'Тип страви не обрано']);
         if ($validator->fails()) {
-            return redirect(route('recipes.create_step_one'))->withErrors($validator)
+            return redirect(route('recipes.create-step-one'))->withErrors($validator)
                                                              ->withInput();
         }
 
@@ -79,12 +79,11 @@ class RecipeController extends Controller
         $cuisine_id = $request->get('cuisine');
         $recipe_meal_type = $request->get('recipe_meal_type');
         $recipe_description = $request->get('recipe_description');
-        // $user_id = Auth::user()->user_id;
 
         //процес створення шляху до зображення і його збереження (подумати що робити із імг якщо не заповняться всі форми)
         $recipe_img_name = time().'.'.$recipe_img->extension();
-        $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
         $recipe_img_path = "images/recipe_picture/{$recipe_img_name}";
+        $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
 
         session()->put('step_1_data', array('name' => $recipe_name, 'img_path' => $recipe_img_path,
                     'meal_type' => $recipe_meal_type, 'cuisine_id' => $cuisine_id,
@@ -94,7 +93,7 @@ class RecipeController extends Controller
     }
 
     public function create_step_two() {
-        return view('recipe/create_step_two');
+        return view('recipe/create-step-two');
     }
 
     public function store_step_two(Request $request) {
@@ -121,7 +120,7 @@ class RecipeController extends Controller
     }
 
     public function create_step_three() {
-        return view('recipe/create_step_three');
+        return view('recipe/create-step-three');
     }
 
     public function store_step_three(Request $request) {
@@ -173,6 +172,52 @@ class RecipeController extends Controller
         }
 
         return redirect(route('recipes.show', $recipe->recipe_id));
+    }
+
+    public function edit_general_data($recipe_id) {
+        $recipe = Recipe::find($recipe_id);
+        $cuisines = Cuisine::all();
+
+        return view('recipe/edit-general-data')->with('recipe', $recipe)
+                                               ->with('cuisines', $cuisines);
+    }
+
+    public function update_general_data(Request $request, $recipe_id) {
+        $rules = ['recipe_name' => 'required',
+                  'recipe_img' => 'required|image',
+                  'cuisine' => 'required',
+                  'recipe_meal_type' => 'required'];
+        $validator = Validator::make($request->all(), $rules,
+                                     ['recipe_name.required' => 'Назва Рецепту не може бути пустою',
+                                      'recipe_img.required' => 'Зображення обкладинки Рецепту не обрано',
+                                      'recipe_img.image' => 'Обраний файл не є зображенням',
+                                      'cuisine.required' => 'Кухню Рецепту не обрано',
+                                      'recipe_meal_type.required' => 'Тип страви не обрано']);
+        if ($validator->fails()) {
+            return redirect(route('recipes.edit_general_data', $recipe_id))->withErrors($validator)
+                                                               ->withInput();
+        }
+
+        $recipe_name = $request->get('recipe_name');
+        $recipe_img = $request->file('recipe_img');
+        $cuisine_id = $request->get('cuisine');
+        $recipe_meal_type = $request->get('recipe_meal_type');
+        $recipe_description = $request->get('recipe_description');
+        
+        $recipe_img_name = time().'.'.$recipe_img->extension();
+        $recipe_img_path = "images/recipe_picture/{$recipe_img_name}";
+
+        $recipe = Recipe::find($recipe_id);
+        $recipe->name = $recipe_name;
+        $recipe->user_id = Auth::user()->user_id;
+        $recipe->cuisine_id = $cuisine_id;
+        $recipe->meal_type = $recipe_meal_type;
+        $recipe->description = $recipe_description;
+        $recipe->img_path = $recipe_img_path;
+        $recipe->save();
+        $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
+
+        return redirect(route('recipes.show', $recipe_id));
     }
 
     public function destroy($recipe_id) {

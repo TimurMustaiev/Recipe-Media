@@ -44,6 +44,8 @@ Route::get('recipes/create/2', [RecipeController::class, 'create_step_two'])->mi
 Route::post('recipes/store/2', [RecipeController::class, 'store_step_two'])->middleware('auth')->name('recipes.store_step_two');
 Route::get('recipes/create/3', [RecipeController::class, 'create_step_three'])->middleware('auth')->name('recipes.create_step_three');
 Route::post('recipes/store/3', [RecipeController::class, 'store_step_three'])->middleware('auth')->name('recipes.store_step_three');
+Route::get('recipes/{recipe_id}/edit/general-data', [RecipeController::class, 'edit_general_data'])->middleware('auth')->name('recipes.edit_general_data');
+Route::patch('recipes/{recipe_id}/general-data', [RecipeController::class, 'update_general_data'])->middleware('auth')->name('recipes.update_general_data');
 Route::delete('recipes/{recipe_id}', [RecipeController::class, 'destroy'])->middleware('auth')->name('recipes.destroy');
 
 Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [RecipeCommentController::class, 'destroy'])->middleware('auth')->name('recipe_comments.destroy');

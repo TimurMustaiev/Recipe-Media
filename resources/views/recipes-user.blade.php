@@ -1,5 +1,5 @@
 @extends('layout')
-
+<link rel="stylesheet" href="{{ asset('css/recipes-user.css') }}">
 @section('tab-title', 'Усі Рецепти Користувача')
 @section('page-content')
     @foreach ($recipes as $recipe)
@@ -11,8 +11,15 @@
                     <p class="left-align">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 120, $end = '...') }}</p>
                     <!--спробувати різні значення довжини тексту-->
                     <a class="btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">Переглянути</a>
-                    <a class="btn" href="">Редагувати</a>
                     @if (Auth::user()->user_id == $user_id)
+                        <div class="navitem dropdown btn btn edit-button">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Редагувати</a>
+                            <ul class="dropdown-menu">
+                            <li><a href="{{ route('recipes.edit_general_data', $recipe->recipe_id) }}">Загальні дані</a></li>
+                            <li><a href="">Інгрідієнти</a></li>
+                            <li><a href="">Кроки</a></li>
+                            </ul>
+                        </div>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe->recipe_id }}">Видалити</button>
                         <div class="modal fade" id="deleteModal-{{ $recipe->recipe_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
