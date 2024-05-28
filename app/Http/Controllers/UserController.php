@@ -11,23 +11,23 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function log_in(Request $request)
-    {   
-        if ($request->isMethod('post')) {
-            $user = User::all()->where('email', $request->get('email'))->first();
+    // public function log_in(Request $request)
+    // {   
+    //     if ($request->isMethod('post')) {
+    //         $user = User::all()->where('email', $request->get('email'))->first();
 
-            // if (!$user || Hash::check($request->get('password'), $user->password))
-            // {
-            //     return redirect('error');
-            // }
+    //         // if (!$user || Hash::check($request->get('password'), $user->password))
+    //         // {
+    //         //     return redirect('error');
+    //         // }
 
-            Auth::login($user);
+    //         Auth::login($user);
 
-            return redirect(route('main_page'));
-        }
+    //         return redirect(route('main_page'));
+    //     }
         
-        return view('auth-login');
-    }
+    //     return view('auth-login');
+    // }
 
     public function log_out() {
         Auth::logout();
@@ -35,15 +35,15 @@ class UserController extends Controller
         return redirect(route('main_page'));
     }
     
-    public function create()
-    {
-        return view('auth-register');
-    }
+    // public function create()
+    // {
+    //     return view('auth-register');
+    // }
 
-    public function edit()
-    {
+    // public function edit()
+    // {
         
-    }
+    // }
 
     public function show_profile($user_id)
     {        

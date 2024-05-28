@@ -24,7 +24,7 @@
       </div>
       <div class="col-2 user">
         @guest
-          <a href="{{ route('users.log_in') }}">Увійти</a>
+          <a href="{{ route('login') }}">Увійти</a>
         @endguest
         @auth
           <a href="{{ route('users.show_profile', Auth::user()->user_id) }}">
@@ -35,7 +35,7 @@
             <ul class="dropdown-menu">
               <li><a href="{{ route('users.show_profile', Auth::user()->user_id) }}">Профіль</a></li>
               <li><a href="{{ route('recipes.create_step_one') }}">Створити рецепт</a></li>
-              <li><a href="{{ route('users.log_out') }}">Вийти</a></li>
+              <li><a href="{{ route('users.logout') }}">Вийти</a></li>
             </ul>
           </div>
         @endauth

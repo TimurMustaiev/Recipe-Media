@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.main')
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 @section('page-content')
 <div class="container-fluid main-content col-9">

@@ -1,9 +1,9 @@
 @php
-    $layout_name = 'simple-layout';
+    $layout_name = 'layouts.simple';
 @endphp
 @if (Auth::user()->user_id != $user_id)
     @php
-        $layout_name = 'layout';
+        $layout_name = 'layouts.main';
     @endphp
 @endif
 @extends($layout_name)

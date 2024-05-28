@@ -1,4 +1,4 @@
-@extends('simple-layout')
+@extends('layouts.simple')
 <link rel="stylesheet" href="{{asset('css/auth-login.css')}}">
 @section('tab-title', 'Вхід')
 

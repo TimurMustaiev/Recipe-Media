@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.main')
 <link rel="stylesheet" href="{{ asset('css/recipe/overview.css') }}">
 {{-- @php
     $submit_rating_url = route('');

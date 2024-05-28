@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.main')
 <link rel="stylesheet" href="{{ asset('css/recipes-user.css') }}">
 @section('tab-title', 'Усі Рецепти Користувача')
 @section('page-content')

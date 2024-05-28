@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.main')
 
 @section('tab-title', 'Створення рецепту')
 @section('page-content')

@@ -5,6 +5,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RecipeCollectionController;
 use App\Http\Controllers\RecipeRatingController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [RecipeController::class, 'get_recent_recipes'])->name('main_page');
 
-Route::get('log-in', [UserController::class, 'log_in'])->name('users.log_in');
-Route::post('log-in', [UserController::class, 'log_in'])->name('users.log_in');
-Route::get('log-out', [UserController::class, 'log_out'])->name('users.log_out');
-Route::get('register', [UserController::class, 'create'])->name('users.create');
+// Route::get('log-in', [UserController::class, 'log_in'])->name('users.log_in');
+// Route::post('log-in', [UserController::class, 'log_in'])->name('users.log_in');
+Route::get('log-out', [UserController::class, 'log_out'])->name('users.logout');
+// Route::get('register', [UserController::class, 'create'])->name('users.create');
 
 Route::get('users/{user_id}/profile', [UserController::class, 'show_profile'])->middleware('auth')->name('users.show_profile');
 Route::get('users/{user_id}/recipes', [RecipeController::class, 'get_user_recipes'])->name('recipes.show_user');
@@ -52,3 +53,4 @@ Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [Recipe
 Route::post('recipes/{recipe_id}/recipe_comments/store', [RecipeCommentController::class, 'store'])->middleware('auth')->name('recipe_comments.store');
 
 Route::post('recipes/{recipe_id}/recipe_ratings/store', [RecipeRatingController::class, 'store'])->middleware('auth')->name('recipe_ratings.store');
+Auth::routes(['login' => 'login', 'register' => 'register']);
