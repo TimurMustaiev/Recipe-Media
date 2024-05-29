@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('name', 150)->nullable(false);
             $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('set null');
             $table->foreignId('cuisine_id')->constrained('cuisines', 'cuisine_id')->onDelete('set null')->nullable(false);
-            //тип дієти?
             $table->enum('meal_type', ['головна страва', 'закуска', 'десерт', 'напій'])->nullable(false);
             $table->string('description', 500)->nullable(true);
             $table->string('img_path')->nullable(false);

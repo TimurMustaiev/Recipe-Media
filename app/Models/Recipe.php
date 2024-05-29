@@ -14,11 +14,6 @@ class Recipe extends Model
     protected $table = 'recipes';
     protected $fillable = array('name', 'country_kitchen_id', 'user_id', 'description', 'img_path');
 
-    // public function groups()
-    // {
-    //     return $this->belongsToMany(RecipeGroup::class, 'recipes_in_group', 'recipe_id', 'recipe_group_id');
-    // }
-
     public function recipe_ingredients() {
         return $this->hasMany(RecipeIngredient::class, 'recipe_id');
     }
@@ -29,5 +24,13 @@ class Recipe extends Model
 
     public function recipe_comments() {
         return $this->hasMany(RecipeComment::class, 'recipe_id');
+    }
+
+    public function recipe_ratings() {
+        return $this->hasMany(RecipeRating::class, 'recipe_id');
+    }
+
+    public function cuisine() {
+        return $this->belongsTo(Cuisine::class, 'cuisine_id');
     }
 }

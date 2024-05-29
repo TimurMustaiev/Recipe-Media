@@ -11,6 +11,7 @@
                     <p class="left-align">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 120, $end = '...') }}</p>
                     <!--спробувати різні значення довжини тексту-->
                     <a class="btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">Переглянути</a>
+                    <a class="btn btn" href="">Додати у Колекцію</a>
                     @if (Auth::user()->user_id == $user_id)
                         <div class="navitem dropdown btn btn edit-button">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Редагувати</a>

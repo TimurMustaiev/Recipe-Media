@@ -14,4 +14,9 @@ class RecipeRating extends Model
 
     protected $table = 'recipe_ratings';
     protected $fillable = array('recipe_rating_id', 'recipe_id', 'user_id', 'value');
+
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class, 'recipe_id');
+    }
 }

@@ -23,7 +23,8 @@ Route::get('/', [RecipeController::class, 'get_recent_recipes'])->name('main_pag
 
 // Route::get('log-in', [UserController::class, 'log_in'])->name('users.log_in');
 // Route::post('log-in', [UserController::class, 'log_in'])->name('users.log_in');
-Route::get('log-out', [UserController::class, 'log_out'])->name('users.logout');
+Auth::routes(['login' => 'login', 'register' => 'register']);
+Route::get('logout', [UserController::class, 'logout'])->name('users.logout');
 // Route::get('register', [UserController::class, 'create'])->name('users.create');
 
 Route::get('users/{user_id}/profile', [UserController::class, 'show_profile'])->middleware('auth')->name('users.show_profile');
@@ -33,9 +34,14 @@ Route::get('users/{user_id}/recipe-collections/create', [RecipeCollectionControl
 Route::post('users/{user_id}/recipe-collections/store', [RecipeCollectionController::class, 'store'])->middleware('auth')->name('recipe_collections.store');
 Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}/edit', [RecipeCollectionController::class, 'edit'])->middleware('auth')->name('recipe_collections.edit');
 Route::patch('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'update'])->middleware('auth')->name('recipe_collections.update');
-Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'get_recipe_collection'])->name('recipe_collections.show_recipes');
+Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}/recipes', [RecipeCollectionController::class, 'get_recipe_collection'])->name('recipe_collections.show_recipes');
 Route::delete('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'destroy'])->middleware('auth')->name('recipe_collections.destroy');
+Route::post('users/{user_id}/recipe-collections/{recipe_collection_id}/store-recipe/{recipe_id}', [RecipeCollectionController::class, 'store_recipe_in_collection'])->middleware('auth')->name('recipe_collections.store_recipe');
+Route::delete('users/{user_id}/recipe-collections/{recipe_collection_id}/recipes/{recipe_id}', [RecipeCollectionController::class, 'delete_recipe_from_collection'])->middleware('auth')->name('recipe_collections.delete_recipe');
 
+// Route::prefix('recipes')->group(function () {
+
+// });
 Route::get('recipes', [RecipeController::class, 'get_all_recipes'])->name('recipes.show_all');
 Route::post('recipes', [RecipeController::class, 'search_recipes'])->name('recipes.search');
 Route::get('recipes/{recipe_id}', [RecipeController::class, 'get_recipe'])->name('recipes.show');
@@ -53,4 +59,3 @@ Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [Recipe
 Route::post('recipes/{recipe_id}/recipe_comments/store', [RecipeCommentController::class, 'store'])->middleware('auth')->name('recipe_comments.store');
 
 Route::post('recipes/{recipe_id}/recipe_ratings/store', [RecipeRatingController::class, 'store'])->middleware('auth')->name('recipe_ratings.store');
-Auth::routes(['login' => 'login', 'register' => 'register']);

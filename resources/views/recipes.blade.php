@@ -10,9 +10,12 @@
                     <br>
                     <p class="left-align">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 120, $end = '...') }}</p>
                     <!--спробувати різні значення довжини тексту-->
-                    <a href="{{ route('recipes.show', $recipe->recipe_id) }}">
-                        <button class="btn-btn recipe-view">Переглянути</button>
+                    <a class="btn btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">
+                        Переглянути
                     </a>
+                    @auth
+                        <a class="btn btn" href="">Додати у Колекцію</a>
+                    @endauth
                 </div>
             </div>
     @endforeach

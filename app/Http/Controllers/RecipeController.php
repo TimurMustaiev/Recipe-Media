@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class RecipeController extends Controller
 {
     public function get_recent_recipes() { //змінити назву
-        $recent_recipes = Recipe::latest('updated_at')->take(3)->get();
+        $recent_recipes = Recipe::with('cuisine')->latest('updated_at')->take(6)->get();
 
         return view('main')->with('recent_recipes', $recent_recipes);
     }

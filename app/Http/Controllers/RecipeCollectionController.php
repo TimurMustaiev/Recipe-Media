@@ -17,8 +17,19 @@ class RecipeCollectionController extends Controller
             $recipe_collections = $recipe_collections->where('access_modificator', 'публічна');
         }
 
+        if(request()->has('recipe-to-add-in-collection')) {
+            return view('recipe-collections')->with('user_id', $user_id)
+                                             ->with('recipe_collections', $recipe_collections)
+                                             ->with('recipe_to_add_in_collection', request()->query('recipe-to-add-in-collection'));
+        }
+        if(request()->has('recipe-added-success')) {
+            return view('recipe-collections')->with('user_id', $user_id)
+                                             ->with('recipe_collections', $recipe_collections)
+                                             ->with('recipe_added_success', true);
+        }
+
         return view('recipe-collections')->with('user_id', $user_id)
-                                    ->with('recipe_collections', $recipe_collections);
+                                         ->with('recipe_collections', $recipe_collections);
     }
 
     public function get_recipe_collection($user_id, $recipe_collection_id) {
@@ -114,11 +125,17 @@ class RecipeCollectionController extends Controller
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
     }
 
-    public function add_recipe() {
+    public function store_recipe_in_collection(Request $request, $user_id, $recipe_collection_id, $recipe_id) {
+        $recipe_collection = RecipeCollection::find($recipe_collection_id);
+        $recipe_collection->recipes()->attach($recipe_id);
 
+        return redirect(route('recipe_collections.show_recipes', [Auth::user()->user_id, $recipe_collection_id]));
     }
 
-    public function store_recipe() {
-        
+    public function delete_recipe_from_collection($user_id, $recipe_collection_id, $recipe_id) {
+        $recipe_collection = RecipeCollection::find($recipe_collection_id);
+        $recipe_collection->recipes()->detach($recipe_id);
+
+        return redirect(route('recipe_collections.show_recipes', [Auth::user()->user_id, $recipe_collection_id]));
     }
 }

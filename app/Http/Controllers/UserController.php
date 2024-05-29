@@ -29,7 +29,7 @@ class UserController extends Controller
     //     return view('auth-login');
     // }
 
-    public function log_out() {
+    public function logout() {
         Auth::logout();
 
         return redirect(route('main_page'));

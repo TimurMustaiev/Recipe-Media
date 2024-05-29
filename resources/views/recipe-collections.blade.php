@@ -19,7 +19,33 @@
                         Переглянути
                     </a>
                     @if (Auth::user()->user_id == $user_id)
-                        <a class="btn" href="{{ route('recipe_collections.edit', [$user_id, $recipe_collection->recipe_collection_id]) }}">
+                        @if(isset($recipe_to_add_in_collection))
+                            <button class="btn btn" data-bs-toggle="modal" data-bs-target="#addModal-{{ $recipe_collection->recipe_collection_id }}">Додати Рецепт у Колекцію</button>
+                            <div class="modal fade" id="addModal-{{ $recipe_collection->recipe_collection_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabel">Розширення Збірки Рецептів</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Додати Рецепт у Збірку Рецептів "{{ $recipe_collection->name }}"?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bsdismiss="modal">Ні</button>
+                                            <form id="form_add-{{ $recipe_collection->recipe_collection_id }}"
+                                                action="{{ route('recipe_collections.store_recipe', [Auth::user()->user_id, $recipe_collection->recipe_collection_id, $recipe_to_add_in_collection]) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" id="add-{{ $recipe_collection->recipe_collection_id }}"
+                                                class="btn btn-primary">Додати</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        <a class="btn btn" href="{{ route('recipe_collections.edit', [$user_id, $recipe_collection->recipe_collection_id]) }}">
                             Редагувати
                         </a>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe_collection->recipe_collection_id }}">Видалити</button>

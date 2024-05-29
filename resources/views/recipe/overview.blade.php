@@ -53,6 +53,11 @@
             <label for="star5" title="5 star"></label>
         </form>
     </div>
+    @auth
+        <div class="add-to-collection-block">
+            Не хочете загубити цей Рецепт? -> <a href="{{ route('users.show_recipe_collections', Auth::user()->user_id)}}?recipe-to-add-in-collection={{$recipe->recipe_id}}">Додати у Збірку Рецептів</a>
+        </div>
+    @endauth
     <script>
         document.querySelectorAll('input[type=radio]').forEach(function(radio) {
             radio.addEventListener('change', function() {
