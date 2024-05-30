@@ -13,9 +13,9 @@
 <div class="user-block">
     <img src="{{ asset($user->img_path) }}" alt="Фото користувача">
     <h2>{{ $user->nickname }}</h2>
-    <!-- if той же юзер -->
-    <a href="">Переглянути дані</a>
-    <!-- endif -->
+    @if (Auth::user()->user_id == $user->user_id)
+        <a href="{{ route('users.edit_profile') }}">Редагувати Профіль</a>
+    @endif
 </div>
 
 <div class="user-content-block">

@@ -21,13 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [RecipeController::class, 'get_recent_recipes'])->name('main_page');
 
-// Route::get('log-in', [UserController::class, 'log_in'])->name('users.log_in');
-// Route::post('log-in', [UserController::class, 'log_in'])->name('users.log_in');
 Auth::routes(['login' => 'login', 'register' => 'register']);
 Route::get('logout', [UserController::class, 'logout'])->name('users.logout');
-// Route::get('register', [UserController::class, 'create'])->name('users.create');
 
 Route::get('users/{user_id}/profile', [UserController::class, 'show_profile'])->middleware('auth')->name('users.show_profile');
+Route::get('profile/edit', [UserController::class, 'edit_profile'])->middleware('auth')->name('users.edit_profile');
+Route::patch('profile', [UserController::class, 'update_profile'])->middleware('auth')->name('users.update_profile');
 Route::get('users/{user_id}/recipes', [RecipeController::class, 'get_user_recipes'])->name('recipes.show_user');
 Route::get('users/{user_id}/recipe-collections', [RecipeCollectionController::class, 'get_user_recipe_collections'])->middleware('auth')->name('users.show_recipe_collections');
 Route::get('users/{user_id}/recipe-collections/create', [RecipeCollectionController::class, 'create'])->middleware('auth')->name('recipe_collections.create');
