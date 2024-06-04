@@ -1,0 +1,34 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.recipe-container {
+    height: 100%;
+    width: 100%;
+}
+
+.recipe {
+    background-color: white;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3%;
+
+    height: 45vh;
+    width: 30%;
+
+    text-align: left;
+
+    border-top-left-radius: 1vh;
+    border-top-right-radius: 1vh;
+
+    border: 0.3vh groove lightgray;
+}
+
+.recipe img {
+    height: 55%;
+    width: 50%;
+    object-fit: contain;
+}

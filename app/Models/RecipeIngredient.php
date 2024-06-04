@@ -14,4 +14,8 @@ class RecipeIngredient extends Model
 
     protected $table = 'recipe_ingredients';
     protected $fillable = array('recipe_id', 'name', 'amount', 'unit');
+
+    public function recipe() {
+        return $this->belongsTo(Recipe::class, 'recipe_id');
+    }
 }

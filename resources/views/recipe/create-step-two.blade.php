@@ -15,7 +15,7 @@
                     <label for="recipe_ingredient">Введіть Інгрідієнт</label>
                     <input id="recipe_ingredient" name="recipe_ingredient" class="form-control" type="text" placeholder="Інгрідієнт">
                     <label for="amount">Введіть кількість продукту</label>
-                    <input id="amount" name="amount" class="form-control" type="number" min="0">
+                    <input id="amount" name="amount" class="form-control" type="number" min="0" step="any">
                     <label for="unit">Оберіть одиницю вимірювання</label>
                     <select id="unit" name="unit" class="form-select">
                         <option value="г">Грам</option>

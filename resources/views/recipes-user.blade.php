@@ -13,15 +13,9 @@
                     <a class="btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">Переглянути</a>
                     <a class="btn btn" href="">Додати у Колекцію</a>
                     @if (Auth::user()->user_id == $user_id)
-                        <div class="navitem dropdown btn btn edit-button">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Редагувати</a>
-                            <ul class="dropdown-menu">
-                            <li><a href="{{ route('recipes.edit_general_data', $recipe->recipe_id) }}">Загальні дані</a></li>
-                            <li><a href="">Інгрідієнти</a></li>
-                            <li><a href="">Кроки</a></li>
-                            </ul>
-                        </div>
+                        <a class="btn btn-primary" href="{{ route('recipes.edit', $recipe->recipe_id) }}">Редагувати</a>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $recipe->recipe_id }}">Видалити</button>
+                        
                         <div class="modal fade" id="deleteModal-{{ $recipe->recipe_id }}" tabindex="-1" arialabelledby="ModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">

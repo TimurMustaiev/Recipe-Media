@@ -16,8 +16,9 @@
       </div>
       <div class="col-7 search-container" role="search">
         <form action="{{ route('recipes.search') }}" class="search-form">
-          <input type="search" id="recipe_name" class="form-control" placeholder="Знайдіть відмінний рецепт!" aria-label="Search" aria-describedby="search-addon">
-          <button class="btn btn-primary search-btn" type="button">
+          @csrf
+          <input type="search" id="recipe_name" name="recipe_name" class="form-control" placeholder="Знайдіть відмінний рецепт!" aria-label="Search" aria-describedby="search-addon">
+          <button class="btn btn-primary search-btn" type="submit">
             <i class="fas fa-search"></i> <!-- Font Awesome search icon -->
           </button>
         </form>

@@ -9,28 +9,33 @@
         <img src="{{ asset($recipe->img_path) }}" alt="Фото страви">
         <div class="text-entry">
             <h3>{{ $recipe->name }}</h3>
+            @if (Request::has('edit_mode'))
+                <a href="{{ route('recipes.edit_general_data', $recipe->recipe_id) }}">
+                    <i class="fas fa-pencil-alt"></i>Загальна інформація
+                </a>
+            @endif
             <p>{{  $recipe->description }}</p>
         </div>
-        <div class="ingredients">
-            <h4>Інгрідієнти</h4>
-            <table>
-                <thead>
-                    <th>Назва</th>
-                    <th>Кількість одиниць</th>
-                    <th>Одиниці виміру</th>
-                </thead>
-                <tbody>
-                    @foreach ($recipe->recipe_ingredients as $recipe_ingredient)
-                        <tr>
-                            <td>{{ $recipe_ingredient->name }}</td>
-                            <td>{{ $recipe_ingredient->amount }}</td>
-                            <td>{{ $recipe_ingredient->unit }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <!--зробити коментар який пояснює скорочення в одиницях-->
-        </div>
+    </div>
+    <div class="ingredients">
+        <h4>Інгрідієнти</h4>
+        <table>
+            <thead>
+                <th>Назва</th>
+                <th>Кількість одиниць</th>
+                <th>Одиниці виміру</th>
+            </thead>
+            <tbody>
+                @foreach ($recipe->recipe_ingredients as $recipe_ingredient)
+                    <tr>
+                        <td>{{ $recipe_ingredient->name }}</td>
+                        <td>{{ $recipe_ingredient->amount }}</td>
+                        <td>{{ $recipe_ingredient->unit }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <!--зробити коментар який пояснює скорочення в одиницях-->
     </div>
     <div class="description">
         <h4>Кроки приготування</h4>

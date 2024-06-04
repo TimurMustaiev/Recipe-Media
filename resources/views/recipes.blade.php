@@ -1,10 +1,10 @@
 @extends('layouts.main')
-
+<link rel="stylesheet" href="{{ asset('css/recipes.css') }}">
 @section('tab-title', 'Усі Рецепти')
 @section('page-content')
-    @foreach ($recipes as $recipe)
-            <div class="recipe-container">
-                <div class="card-body shadow-sm recent_recipe">
+    <div class="recipes-container">
+        @foreach ($recipes as $recipe)
+                <div class="recipe">
                     <h3>{{ $recipe->name }}</h3>
                     <img src="{{ asset($recipe->img_path) }}" alt="Картинка рецепту">
                     <br>
@@ -17,6 +17,6 @@
                         <a class="btn btn" href="">Додати у Колекцію</a>
                     @endauth
                 </div>
-            </div>
-    @endforeach
+        @endforeach
+    </div>
 @endsection

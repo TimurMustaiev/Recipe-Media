@@ -14,9 +14,20 @@ use Illuminate\Support\Facades\Validator;
 class RecipeController extends Controller
 {
     public function get_recent_recipes() { //змінити назву
-        $recent_recipes = Recipe::with('cuisine')->latest('updated_at')->take(6)->get();
+        $recent_recipes = Recipe::with('cuisine')->latest('updated_at')->take(3)->get();
 
-        return view('main')->with('recent_recipes', $recent_recipes);
+        $best_recipes = Recipe::withCount('recipe_ratings')->with(['recipe_ratings' => function ($query) {
+            $query->selectRaw('AVG(value) as avg_recipe_rating, recipe_id')
+                  ->groupBy('recipe_id');
+        }])->get()->sortByDesc(function ($recipe) {
+            if ($recipe->recipe_ratings_count == 0 || is_null($recipe->recipe_ratings->first())) {
+                return 0;
+            }
+            return $recipe->recipe_ratings_count / $recipe->recipe_ratings->first()->avg_recipe_rating;
+        })->take(3)->reverse();
+
+        return view('main')->with('recent_recipes', $recent_recipes)
+                           ->with('best_recipes', $best_recipes);
     }
 
     public function get_all_recipes() {
@@ -41,16 +52,15 @@ class RecipeController extends Controller
     public function search_recipes(Request $request) {
         $recipe_name = $request->get('recipe_name');
 
-        $matching_recipes = Recipe::where('name', 'ILIKE', '%' . $recipe_name . '%')->get(); //лише для pgsql
+        $matching_recipes = Recipe::where('name', 'like', '%' . $recipe_name . '%')->get();
 
         return view('recipes')->with('recipes', $matching_recipes);
     }
 
-    //CRUD
     public function create_step_one() {
         $cuisines = Cuisine::all();
 
-        return view('recipe/create_step_one')->with('cuisines', $cuisines);
+        return view('recipe/create-step-one')->with('cuisines', $cuisines);
     }
 
     public function store_step_one(Request $request) {
@@ -65,7 +75,7 @@ class RecipeController extends Controller
                                       'cuisine.required' => 'Кухню Рецепту не обрано',
                                       'recipe_meal_type.required' => 'Тип страви не обрано']);
         if ($validator->fails()) {
-            return redirect(route('recipes.create-step-one'))->withErrors($validator)
+            return redirect(route('recipes.create_step_one'))->withErrors($validator)
                                                              ->withInput();
         }
 
@@ -106,7 +116,6 @@ class RecipeController extends Controller
                                                   $fail('Не введено жодного Інгрідієнту');
                                               }
                                           }]];
-        //розібратись
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -227,5 +236,9 @@ class RecipeController extends Controller
         $recipe->delete();
 
         return redirect(route('recipes.show_user', Auth::user()->user_id));
+    }
+
+    public function edit($recipe_id) {
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }
 }
