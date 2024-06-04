@@ -53,8 +53,7 @@ Route::post('recipes/store/3', [RecipeController::class, 'store_step_three'])->m
 Route::get('recipes/{recipe_id}/edit', [RecipeController::class, 'edit'])->middleware('auth')->name('recipes.edit');
 Route::get('recipes/{recipe_id}/edit/general-data', [RecipeController::class, 'edit_general_data'])->middleware('auth')->name('recipes.edit_general_data');
 Route::patch('recipes/{recipe_id}/general-data', [RecipeController::class, 'update_general_data'])->middleware('auth')->name('recipes.update_general_data');
-// Route::get('recipes/{recipe_id}/edit/ingredients', [RecipeController::class, 'edit_ingredients'])->middleware('auth')->name('recipes.edit_ingredients');
-// Route::patch('recipes/{recipe_id}/ingredients', [RecipeController::class, 'update_ingredients'])->middleware('auth')->name('recipes.update_ingredients');
+Route::delete('recipes/{recipe_id}/ingredients/{recipe_ingredient_id}', [RecipeController::class, 'delete_ingredient'])->middleware('auth')->name('recipes.delete_ingredient');
 Route::delete('recipes/{recipe_id}', [RecipeController::class, 'destroy'])->middleware('auth')->name('recipes.destroy');
 
 Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [RecipeCommentController::class, 'destroy'])->middleware('auth')->name('recipe_comments.destroy');

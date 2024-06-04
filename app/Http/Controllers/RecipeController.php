@@ -241,4 +241,13 @@ class RecipeController extends Controller
     public function edit($recipe_id) {
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }
+
+    public function delete_ingredient($recipe_id, $recipe_ingredient_id) {
+        $recipe = Recipe::with('recipe_ingredients')->find($recipe_id);
+
+        $recipe_ingredient = RecipeIngredient::where('recipe_id', $recipe_id)->find($recipe_ingredient_id);
+        $recipe_ingredient->delete();
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
+    }
 }
