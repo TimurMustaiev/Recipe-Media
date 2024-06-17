@@ -14,14 +14,11 @@ class RecipeRatingController extends Controller
         $existing_recipe_rating = RecipeRating::where('user_id', Auth::user()->user_id)
                                                   ->where('recipe_id', $recipe_id)
                                                   ->first();
-            
-        $has_previous_rating = false;
 
-        if ($existing_recipe_rating) {
+        if ($existing_recipe_rating != null) {
             $existing_recipe_rating->value = $recipe_rating_value;
             $existing_recipe_rating->save();
 
-            $has_previous_rating = true;
         }
         else {
             $recipe_rating = new RecipeRating();
@@ -31,7 +28,6 @@ class RecipeRatingController extends Controller
             $recipe_rating->save();
         }
 
-        return redirect(route('recipes.show', $recipe_id))->with('set_rating', true)
-                                                          ->with('has_previous_rating', $has_previous_rating);
+        return redirect(route('recipes.show', $recipe_id))->with('rating_stored_value', $recipe_rating_value);
     }
 }

@@ -19,30 +19,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [RecipeController::class, 'get_recent_recipes'])->name('main_page');
+Route::get('/', [RecipeController::class, 'get_recipes_for_main'])->name('main_page');
 
 Auth::routes(['login' => 'login', 'register' => 'register']);
 Route::get('logout', [UserController::class, 'logout'])->name('users.logout');
 
 Route::get('users/{user_id}/profile', [UserController::class, 'show_profile'])->middleware('auth')->name('users.show_profile');
-Route::get('profile/edit', [UserController::class, 'edit_profile'])->middleware('auth')->name('users.edit_profile');
-Route::patch('profile', [UserController::class, 'update_profile'])->middleware('auth')->name('users.update_profile');
+Route::get('users/{user_id}/profile/edit', [UserController::class, 'edit_profile'])->middleware('auth')->name('users.edit_profile');
+Route::patch('users/{user_id}/profile', [UserController::class, 'update_profile'])->middleware('auth')->name('users.update_profile');
 Route::get('users/{user_id}/recipes', [RecipeController::class, 'get_user_recipes'])->name('recipes.show_user');
 Route::get('users/{user_id}/recipe-collections', [RecipeCollectionController::class, 'get_user_recipe_collections'])->middleware('auth')->name('users.show_recipe_collections');
-Route::get('users/{user_id}/recipe-collections/create', [RecipeCollectionController::class, 'create'])->middleware('auth')->name('recipe_collections.create');
-Route::post('users/{user_id}/recipe-collections/store', [RecipeCollectionController::class, 'store'])->middleware('auth')->name('recipe_collections.store');
-Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}/edit', [RecipeCollectionController::class, 'edit'])->middleware('auth')->name('recipe_collections.edit');
-Route::patch('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'update'])->middleware('auth')->name('recipe_collections.update');
 Route::get('users/{user_id}/recipe-collections/{recipe_collection_id}/recipes', [RecipeCollectionController::class, 'get_recipe_collection'])->name('recipe_collections.show_recipes');
-Route::delete('users/{user_id}/recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'destroy'])->middleware('auth')->name('recipe_collections.destroy');
-Route::post('users/{user_id}/recipe-collections/{recipe_collection_id}/store-recipe/{recipe_id}', [RecipeCollectionController::class, 'store_recipe_in_collection'])->middleware('auth')->name('recipe_collections.store_recipe');
-Route::delete('users/{user_id}/recipe-collections/{recipe_collection_id}/recipes/{recipe_id}', [RecipeCollectionController::class, 'delete_recipe_from_collection'])->middleware('auth')->name('recipe_collections.delete_recipe');
+
+Route::get('recipe-collections/create', [RecipeCollectionController::class, 'create'])->middleware('auth')->name('recipe_collections.create');
+Route::post('recipe-collections/store', [RecipeCollectionController::class, 'store'])->middleware('auth')->name('recipe_collections.store');
+Route::get('recipe-collections/{recipe_collection_id}/edit', [RecipeCollectionController::class, 'edit'])->middleware('auth')->name('recipe_collections.edit');
+Route::patch('recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'update'])->middleware('auth')->name('recipe_collections.update');
+Route::delete('recipe-collections/{recipe_collection_id}', [RecipeCollectionController::class, 'destroy'])->middleware('auth')->name('recipe_collections.destroy');
+Route::post('recipe-collections/{recipe_collection_id}/store-recipe/{recipe_id}', [RecipeCollectionController::class, 'store_recipe_in_collection'])->middleware('auth')->name('recipe_collections.store_recipe');
+Route::delete('recipe-collections/{recipe_collection_id}/recipes/{recipe_id}', [RecipeCollectionController::class, 'delete_recipe_from_collection'])->middleware('auth')->name('recipe_collections.delete_recipe');
 
 // Route::prefix('recipes')->group(function () {
 
 // });
 Route::get('recipes', [RecipeController::class, 'get_all_recipes'])->name('recipes.show_all');
-Route::get('recipes-search', [RecipeController::class, 'search_recipes'])->name('recipes.search');
+Route::get('recipes/search', [RecipeController::class, 'search_recipes'])->name('recipes.search');
 Route::get('recipes/{recipe_id}', [RecipeController::class, 'get_recipe'])->name('recipes.show');
 Route::get('recipes/create/1', [RecipeController::class, 'create_step_one'])->middleware('auth')->name('recipes.create_step_one');
 Route::post('recipes/store/1', [RecipeController::class, 'store_step_one'])->middleware('auth')->name('recipes.store_step_one');
@@ -53,7 +54,12 @@ Route::post('recipes/store/3', [RecipeController::class, 'store_step_three'])->m
 Route::get('recipes/{recipe_id}/edit', [RecipeController::class, 'edit'])->middleware('auth')->name('recipes.edit');
 Route::get('recipes/{recipe_id}/edit/general-data', [RecipeController::class, 'edit_general_data'])->middleware('auth')->name('recipes.edit_general_data');
 Route::patch('recipes/{recipe_id}/general-data', [RecipeController::class, 'update_general_data'])->middleware('auth')->name('recipes.update_general_data');
+Route::post('recipes/{recipe_id}/ingredients', [RecipeController::class, 'add_ingredient'])->middleware('auth')->name('recipes.add_ingredient');
+Route::patch('recipes/{recipe_id}/ingredients/{recipe_ingredient_id}', [RecipeController::class, 'update_ingredient'])->middleware('auth')->name('recipes.update_ingredient');
 Route::delete('recipes/{recipe_id}/ingredients/{recipe_ingredient_id}', [RecipeController::class, 'delete_ingredient'])->middleware('auth')->name('recipes.delete_ingredient');
+Route::post('recipes/{recipe_id}/steps', [RecipeController::class, 'add_step'])->middleware('auth')->name('recipes.add_step');
+Route::patch('recipes/{recipe_id}/steps/{recipe_step_id}', [RecipeController::class, 'update_step'])->middleware('auth')->name('recipes.update_step');
+Route::delete('recipes/{recipe_id}/steps/{recipe_step_id}', [RecipeController::class, 'delete_step'])->middleware('auth')->name('recipes.delete_step');
 Route::delete('recipes/{recipe_id}', [RecipeController::class, 'destroy'])->middleware('auth')->name('recipes.destroy');
 
 Route::delete('recipes/{recipe_id}/recipe_comments/{recipe_comment_id}', [RecipeCommentController::class, 'destroy'])->middleware('auth')->name('recipe_comments.destroy');

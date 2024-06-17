@@ -1,29 +1,33 @@
 @extends('layouts.main')
-
-@section('tab-title', 'Створення рецепту')
+<link rel="stylesheet" href="{{ asset('css/recipe/create_step_three.css') }}">
+@section('tab-title', 'Створення рецепту: етап 3')
 @section('page-content')
-<div class="container-fluid vw-100 vh-100 row align-items-center d-flex flex-column">
-    <div class="text-center col-4">
-        <h2>Створіть новий вегетаріанський шедевр!</h2>
-        <p>Крок 3</p>
-    </div>
-    <div class="form-container row-5 col-4">
-        <form action="{{ route('recipes.store_step_three') }}" method="POST">
-            @csrf
-            <div>
-                <label for="description">Опишіть Крок Рецепту</label>
-                <textarea id="description" name="description" class="form-control"></textarea>
-            </div>
-            <div id="entered_steps" class="entered_steps">
-                @error('steps_array')
-                    {{ $message }}
-                @enderror
-            </div>
-
-            <input type="hidden" id="steps_array" name="steps_array" value="">
-            <button type="button" onclick="addStep()">Додати</button>
-            <button type="submit" onclick="submitForm()">Створити Рецепт</button>
-        </form>
+<div class="text-center">
+    <h2>Створіть новий вегетаріанський Рецепт</h2>
+</div>
+<div class="mb-5 form-container">
+    <div class="card col-5">
+        <div class="card-header">Етап 3: Кроки Рецепту</div>
+        <div class="card-body">
+            <form action="{{ route('recipes.store_step_three') }}" method="POST">
+                @csrf
+                <div class="main-container">
+                    <label for="description">Опис</label>
+                    <textarea rows="6" id="description" name="description" class="form-control"></textarea>
+                    <button class="mt-3 btn btn-dark" type="button" onclick="addStep()" style="width:30%;">Додати</button>
+                </div>
+                <div id="entered_steps" class="entered_steps">
+                    @error('steps_array')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <div class="button-container">
+                    <a class="btn btn-secondary" href="{{ route('recipes.create_step_two') }}" style="float: left;width: 13%;">Назад</a>
+                    <button class="btn btn-success" type="submit" onclick="submitForm()" style="float: right;width: 28%;">Створити Рецепт</button>
+                </div>
+                <input type="hidden" id="steps_array" name="steps_array">
+            </form>
+        </div>
     </div>
 </div>
 <script>
@@ -46,8 +50,9 @@
 
         var enteredSteps = document.getElementById('entered_steps');
         var stepContainer = document.createElement('div');
+        stepContainer.classList.add('new-step-field');
         stepContainer.innerHTML = `${stepCount} - ${description.substring(0, 20)}`;
-        if(description.length >= 20) {
+        if(description.length >= 50) {
             stepContainer.innerHTML += '...';
         }
 

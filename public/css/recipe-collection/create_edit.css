@@ -1,0 +1,29 @@
+.content {
+    height: 100%;
+    text-align: center;
+}
+
+.text-center, .form-container {
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container .card label {
+    float: left;
+    margin-left: 2%;
+}
+
+#access_modificator {
+    width: fit-content;
+    padding-right: 1vw;
+}
+
+#submit-button {
+    /* margin-top: 5vh; */
+    width: 25%;
+}

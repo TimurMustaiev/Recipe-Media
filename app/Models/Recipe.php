@@ -12,8 +12,12 @@ class Recipe extends Model
     protected $primaryKey = 'recipe_id';
 
     protected $table = 'recipes';
-    protected $fillable = array('name', 'country_kitchen_id', 'user_id', 'description', 'img_path');
+    protected $fillable = array('name', 'cuisine_id', 'meal_type', 'user_id', 'description', 'img_path');
 
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
     public function recipe_ingredients() {
         return $this->hasMany(RecipeIngredient::class, 'recipe_id');
     }

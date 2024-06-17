@@ -1,13 +1,12 @@
 @extends('layouts.simple')
-
+<link rel="stylesheet" href="{{ asset('css/profile-edit.css') }}">
 @section('tab-title', 'Редагування Профілю')
 @section('page-content')
-<div class="container-fluid vw-100 vh-100 row align-items-center d-flex flex-column">
     <div class="card">
         <div class="card-header">{{ __('Дані Профілю') }}</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('users.update_profile') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('users.update_profile', Auth::user()->user_id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
@@ -67,9 +66,9 @@
                     </div>
                 </div>
 
-                <div class="row mb-0">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
+                <div class="row mb-0" style="margin-top: 6vh;">
+                    <div class="col-md-4 offset-md-4">
+                        <button id="submit-button" type="submit" class="btn btn-primary">
                             {{ __('Змінити') }}
                         </button>
                     </div>
@@ -77,5 +76,4 @@
             </form>
         </div>
     </div>
-</div>
 @endsection

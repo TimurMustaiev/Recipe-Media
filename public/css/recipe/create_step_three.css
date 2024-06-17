@@ -20,18 +20,17 @@
     margin-left: 2%;
 }
 
-.entered_ingredients {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+.entered-steps {
+    text-align: left;
 }
 
-.new-ingredient-field {
+.new-step-field {
     border: solid 1px rgb(136, 135, 135);
-    border-radius: 55px;
+    border-radius: 3px;
+    height: fit-content;
     width: fit-content;
     padding: 1%;
-    margin-top: 3%;
+    margin-top: 1.5%;
     margin-left: 2%;
 }
 

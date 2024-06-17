@@ -5,20 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Cuisine;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
-use App\Models\RecipeIngredient;
-use App\Models\RecipeStep;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {
-    public function get_recent_recipes() { //змінити назву
-        $recent_recipes = Recipe::with('cuisine')->latest('updated_at')->take(3)->get();
+    public function get_recipes_for_main() {
+        $recent_recipes = Recipe::with('cuisine', 'user')->latest('updated_at')->take(3)->get();
 
-        $best_recipes = Recipe::withCount('recipe_ratings')->with(['recipe_ratings' => function ($query) {
-            $query->selectRaw('AVG(value) as avg_recipe_rating, recipe_id')
-                  ->groupBy('recipe_id');
+        $best_recipes = Recipe::with('cuisine')->withCount('recipe_ratings')->with(['recipe_ratings' => function ($query) {
+            $query->selectRaw('AVG(value) as avg_recipe_rating, recipe_id')->groupBy('recipe_id');
         }])->get()->sortByDesc(function ($recipe) {
             if ($recipe->recipe_ratings_count == 0 || is_null($recipe->recipe_ratings->first())) {
                 return 0;
@@ -52,7 +49,11 @@ class RecipeController extends Controller
     public function search_recipes(Request $request) {
         $recipe_name = $request->get('recipe_name');
 
-        $matching_recipes = Recipe::where('name', 'like', '%' . $recipe_name . '%')->get();
+        if($recipe_name == null || $recipe_name == '') {
+            
+        }
+
+        $matching_recipes = Recipe::where('name', 'ILIKE', '%' . $recipe_name . '%')->get();
 
         return view('recipes')->with('recipes', $matching_recipes);
     }
@@ -70,7 +71,7 @@ class RecipeController extends Controller
                   'recipe_meal_type' => 'required'];
         $validator = Validator::make($request->all(), $rules,
                                      ['recipe_name.required' => 'Назва Рецепту не може бути пустою',
-                                      'recipe_img.required' => 'Зображення обкладинки Рецепту не обрано',
+                                      'recipe_img.required' => 'Зображення головного фото Рецепту не обрано',
                                       'recipe_img.image' => 'Обраний файл не є зображенням',
                                       'cuisine.required' => 'Кухню Рецепту не обрано',
                                       'recipe_meal_type.required' => 'Тип страви не обрано']);
@@ -144,7 +145,6 @@ class RecipeController extends Controller
                                                   $fail('Не введено жодного Кроку');
                                               }
                                           }]];
-        //розібратись
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -162,22 +162,14 @@ class RecipeController extends Controller
         $recipe->save();
 
         foreach($step_2_data['recipe_ingredients'] as $recipe_ingredient_data) {
-            $recipe_ingredient = new RecipeIngredient();
-            $recipe_ingredient->recipe_id = $recipe->recipe_id;
-            $recipe_ingredient->name = $recipe_ingredient_data['name'];
-            $recipe_ingredient->amount = $recipe_ingredient_data['amount'];
-            $recipe_ingredient->unit = $recipe_ingredient_data['unit'];
-        
-            $recipe_ingredient->save();
+            $recipe->recipe_ingredients()->create(['name' => $recipe_ingredient_data['name'],
+                                                   'amount' => $recipe_ingredient_data['amount'],
+                                                   'unit' => $recipe_ingredient_data['unit']]);
         }
 
         foreach($recipe_steps as $recipe_step_data) {
-            $recipe_step = new RecipeStep();
-            $recipe_step->recipe_id = $recipe->recipe_id;
-            $recipe_step->ordinal_number = $recipe_step_data['ordinalNumber'];
-            $recipe_step->description = $recipe_step_data['description'];
-
-            $recipe_step->save();
+            $recipe->recipe_steps()->create(['ordinal_number' => $recipe_step_data['ordinalNumber'],
+                                             'description' => $recipe_step_data['description']]);
         }
 
         return redirect(route('recipes.show', $recipe->recipe_id));
@@ -198,7 +190,7 @@ class RecipeController extends Controller
                   'recipe_meal_type' => 'required'];
         $validator = Validator::make($request->all(), $rules,
                                      ['recipe_name.required' => 'Назва Рецепту не може бути пустою',
-                                      'recipe_img.required' => 'Зображення обкладинки Рецепту не обрано',
+                                      'recipe_img.required' => 'Зображення головного фото Рецепту не обрано',
                                       'recipe_img.image' => 'Обраний файл не є зображенням',
                                       'cuisine.required' => 'Кухню Рецепту не обрано',
                                       'recipe_meal_type.required' => 'Тип страви не обрано']);
@@ -226,7 +218,7 @@ class RecipeController extends Controller
         $recipe->save();
         $recipe_img->move(public_path('images/recipe_picture'), $recipe_img_name);
 
-        return redirect(route('recipes.show', $recipe_id));
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }
 
     public function destroy($recipe_id) {
@@ -242,11 +234,88 @@ class RecipeController extends Controller
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }
 
+    public function add_ingredient(Request $request, $recipe_id) {
+        //валідатор
+
+        $recipe = Recipe::find($recipe_id);
+ 
+        $recipe->recipe_ingredients()->create(['name' => $request->get('recipe_ingredient'),
+                                               'amount' => $request->get('amount'),
+                                               'unit' => $request->get('unit')]);
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
+    }
+
+    public function update_ingredient(Request $request, $recipe_id, $recipe_ingredient_id) {
+        //валідатор
+        $recipe = Recipe::with('recipe_ingredients')->find($recipe_id);
+
+        $recipe_ingredient = $recipe->recipe_ingredients->find($recipe_ingredient_id);
+        $recipe_ingredient->name = $request->get('recipe_ingredient');
+        $recipe_ingredient->amount = $request->get('amount');
+        $recipe_ingredient->unit = $request->get('unit');
+        $recipe_ingredient->save();
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
+    }
+
     public function delete_ingredient($recipe_id, $recipe_ingredient_id) {
         $recipe = Recipe::with('recipe_ingredients')->find($recipe_id);
 
-        $recipe_ingredient = RecipeIngredient::where('recipe_id', $recipe_id)->find($recipe_ingredient_id);
+        $recipe_ingredient = $recipe->recipe_ingredients->find($recipe_ingredient_id);
         $recipe_ingredient->delete();
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
+    }
+
+    public function add_step(Request $request, $recipe_id) {
+        //валідатор
+
+        $recipe = Recipe::find($recipe_id);
+        $ordinal_number = $request->get('ordinal_number');
+        $description = $request->get('description'); //?
+
+        if ($recipe->recipe_steps()->where('ordinal_number', $ordinal_number)->exists()) {
+            foreach ($recipe->recipe_steps as $recipe_step) {
+                if ($recipe_step->ordinal_number >= $ordinal_number) {
+                    $recipe_step->ordinal_number += 1;
+                    $recipe_step->save();
+                }
+            }
+        }
+
+        $recipe->recipe_steps()->create(['ordinal_number' => $ordinal_number,
+                                         'description' => $description]);
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));                                
+    }
+
+    public function update_step(Request $request, $recipe_id, $recipe_step_id) {
+        //валідатор
+
+        $ordinal_number = $request->get('ordinal_number');
+        $description = $request->get('description');
+        
+        $recipe = Recipe::find($recipe_id);
+        $recipe_step = $recipe->recipe_steps->find($recipe_step_id);
+        $recipe_step->ordinal_number = $ordinal_number;
+        $recipe_step->description = $description;
+        $recipe_step->save();
+
+        return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
+    }
+
+    public function delete_step($recipe_id, $recipe_step_id) {
+        $recipe = Recipe::find($recipe_id);
+        $selected_recipe_step = $recipe->recipe_steps->find($recipe_step_id);
+        $selected_recipe_step->delete();
+
+        foreach ($recipe->recipe_steps as $recipe_step) {
+            if ($recipe_step->ordinal_number > $selected_recipe_step->ordinal_number) {
+                $recipe_step->ordinal_number -= 1;
+                $recipe_step->save();
+            }
+        }
 
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }

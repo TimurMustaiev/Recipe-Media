@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('recipe_id')->constrained('recipes', 'recipe_id')->onDelete('cascade')->nullable(false);
             $table->string('name', 50)->nullable(false);
             $table->integer('amount')->nullable(false);
-            $table->enum('unit', ['г', 'кг', 'мл', 'л', 'ст.л.', 'ч.л.', 'шт.'])->nullable(false);
+            $table->enum('unit', ['г.', 'кг.', 'мл.', 'л.', 'ст.л.', 'ч.л.', 'шт.'])->nullable(false);
         });
     }
 

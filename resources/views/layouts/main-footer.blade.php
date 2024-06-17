@@ -46,6 +46,11 @@
     <div class="content">
       @yield('page-content')
     </div>
+    <footer>
+            <p style="margin-top: 3vh;">Студент КН-21-1</p>
+            <p style="margin-top:;">Мустаєв Тімур</p>
+            <p style="margin-top: ;">&copy;2024</p>
+    </footer>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

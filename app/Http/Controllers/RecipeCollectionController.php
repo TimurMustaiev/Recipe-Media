@@ -39,19 +39,19 @@ class RecipeCollectionController extends Controller
                                                  ->with('user_id', $user_id);
     }
 
-    public function create($user_id) {
+    public function create() {
         return view('recipe-collection/create');
     }
 
-    public function store(Request $request, $user_id) {
+    public function store(Request $request) {
         $rules = ['name' => 'required', 'access_modificator' => 'required', 'img' => 'required|image'];
-        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Колекції не може бути пустою',
-                                                               'access_modificator' => 'Тип видимості Колекції не обрано',
-                                                               'img.required' => 'Зображення обкладинки Колекції не обрано',
+        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Збірки не може бути пустою',
+                                                               'access_modificator' => 'Тип видимості Збірки не обрано',
+                                                               'img.required' => 'Головне зображення Збірки не обрано',
                                                                'img.image' => 'Обраний файл не є зображенням']);
         if ($validator->fails()) {
-            return redirect(route('recipe_collections.create', Auth::user()->user_id))->withErrors($validator)
-                                                                                          ->withInput();
+            return redirect(route('recipe_collections.create'))->withErrors($validator)
+                                                               ->withInput();
         }
 
         $name = $request->get('name');
@@ -75,21 +75,20 @@ class RecipeCollectionController extends Controller
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
     }
 
-    public function edit($user_id, $recipe_collection_id) {
+    public function edit($recipe_collection_id) {
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
 
         return view('recipe-collection/edit')->with('recipe_collection', $recipe_collection);
     }
 
-    public function update(Request $request, $user_id, $recipe_collection_id) {
-        $rules = ['name' => 'required', 'access_modificator' => 'required', 'img' => 'required|image'];
-        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Колекції не може бути пустою',
-                                                               'access_modificator' => 'Тип видимості Колекції не обрано',
-                                                               'img.required' => 'Зображення обкладинки Колекції не обрано',
+    public function update(Request $request, $recipe_collection_id) {
+        $rules = ['name' => 'required', 'access_modificator' => 'required', 'img' => 'image'];
+        $validator = Validator::make($request->all(), $rules, ['name.required' => 'Назва Збірки не може бути пустою',
+                                                               'access_modificator' => 'Тип видимості Збірки не обрано',
                                                                'img.image' => 'Обраний файл не є зображенням']);
         if ($validator->fails()) {
-            return redirect(route('recipe_collections.edit', [Auth::user()->user_id, $recipe_collection_id]))->withErrors($validator)
-                                                                                                             ->withInput();
+            return redirect(route('recipe_collections.edit', $recipe_collection_id))->withErrors($validator)
+                                                                                    ->withInput();
         }
         
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
@@ -116,23 +115,27 @@ class RecipeCollectionController extends Controller
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
     }
 
-    public function destroy($user_id, $recipe_collection_id) {
+    public function destroy($recipe_collection_id) {
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
-        if(File::exists($recipe_collection->img_path)) //при роботі з public
+        if(File::exists($recipe_collection->img_path))
             File::delete($recipe_collection->img_path);
         $recipe_collection->delete();
 
         return redirect(route('users.show_recipe_collections', Auth::user()->user_id));
     }
 
-    public function store_recipe_in_collection(Request $request, $user_id, $recipe_collection_id, $recipe_id) {
+    public function store_recipe_in_collection($recipe_collection_id, $recipe_id) {
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
+        if ($recipe_collection->recipes->find($recipe_id)) {
+            $add_to_collection_error = 'Даний рецепт вже був доданий до обраної збірки.';
+            return redirect(route('recipes.show', $recipe_id))->with('add_to_collection_error', $add_to_collection_error);
+        }
         $recipe_collection->recipes()->attach($recipe_id);
 
         return redirect(route('recipe_collections.show_recipes', [Auth::user()->user_id, $recipe_collection_id]));
     }
 
-    public function delete_recipe_from_collection($user_id, $recipe_collection_id, $recipe_id) {
+    public function delete_recipe_from_collection($recipe_collection_id, $recipe_id) {
         $recipe_collection = RecipeCollection::find($recipe_collection_id);
         $recipe_collection->recipes()->detach($recipe_id);
 

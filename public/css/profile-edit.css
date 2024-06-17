@@ -8,6 +8,7 @@
 }
 
 .card {
+    width: 40%;
     margin-top: 5%;
     margin-bottom: 20%;
 }
@@ -16,10 +17,6 @@
     width: 100%;
 }
 
-.register-link-block {
-    text-align: center;
-}
-
-#register-link {
-    text-decoration: none;
+label {
+    display: block;
 }

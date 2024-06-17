@@ -11,73 +11,91 @@
 @section('tab-title', 'Профіль користувача: ' . $user->nickname)
 @section('page-content')
 <div class="user-block">
-    <img src="{{ asset($user->img_path) }}" alt="Фото користувача">
-    <h2>{{ $user->nickname }}</h2>
-    @if (Auth::user()->user_id == $user->user_id)
-        <a href="{{ route('users.edit_profile') }}">Редагувати Профіль</a>
-    @endif
+    <div class="shadow-sm user-info-container">
+        <img src="{{ asset($user->img_path) }}" alt="Фото користувача">
+        <h2 style="margin-bottom: -7px;">{{ $user->nickname }}</h2>
+        <p class="text-muted">Рецептів опубліковано: {{ count($user->recipes) }}</p>
+        @if (Auth::user()->user_id == $user->user_id)
+            <a class="btn btn-primary" style="margin-top: 3px" href="{{ route('users.edit_profile', Auth::user()->user_id) }}">Редагувати Профіль</a>
+        @endif
+    </div>
 </div>
 
 <div class="user-content-block">
-    <div class="recipe-block">
-        <h3>Опубліковані Рецепти</h3>
+    <div class="shadow-sm recipe-block">
         @if (count($recipes) == 0)
+            <h3 style="text-align: center;margin-top:1vh;">Опубліковані Рецепти</h3>
             @if (Auth::user()->user_id == $user_id)
-                У вас ще немає опублікованих Рецептів
-                <a href="{{ route('recipes.create_step_one', Auth::user()->user_id) }}">Створити новий Рецепт</a> 
+                <p style="text-align: center; margin-top: 10vh;">У вас ще немає опублікованих Рецептів</p>
             @else
-                Цей користувач не має опублікованих Рецептів
+                <p style="text-align: center; margin-top: 10vh;">Користувач не має опублікованих Рецептів</p>
             @endif
         @else
+            <h3 style="text-align: center;margin-top:1vh;margin-left:9vw;margin-bottom:0">Опубліковані Рецепти <span><a class="btn btn-primary" href="{{ route('recipes.show_user', $user_id) }}">Переглянути всі</a></span></h3>
             <div class="recipe-list">
                 @foreach ($recipes as $recipe)
-                <div class="recipe-container">
-                    <div class="card-body shadow-sm recipe">
-                        <h3>{{ $recipe->name }}</h3>
-                        <img src="{{ asset($recipe->img_path) }}" alt="Картинка рецепту">
-                        <br>
-                        <p class="left-align">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 60, $end = '...') }}</p>
-                        <!--спробувати різні значення довжини тексту-->
-                        <a class="btn" href="{{ route('recipes.show', $recipe->recipe_id) }}">Переглянути</a>
+                    <div class="card recipe" style="max-width: 50%; height: 90% !important;margin-bottom:2vh;">
+                        <div class="row no-gutters" style="height: 100%; !important">
+                            <div class="col-6">
+                                <img class="card-img" src="{{ asset($recipe->img_path) }}" alt="...">
+                            </div>
+                        
+                            <div class="col-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $recipe->name }}</h5>
+                                    <p class="card-text">{{ $recipe->meal_type }}</p>
+                                    <p class="left-align card-text">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 35, $end = '...') }}</p>
+                                    <p class="card-text"><small class="text-muted">Востаннє оновлений {{ $recipe->updated_at->format('d-m-Y H:i') }}</small></p>
+                                    <a class="btn btn-sm btn-outline-secondary" style="float: right; margin-top: -1vh;" href="{{ route('recipes.show', $recipe->recipe_id) }}">
+                                        Переглянути
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 @endforeach
             </div>
-            <a href="{{ route('recipes.show_user', $user_id) }}">Переглянути всі Рецепти</a>
         @endif
     </div>
 
-    <div class="recipe-collection-block">
-        <h3>Збірки Рецептів</h3>
-        <div class="recipe-collection-list">
+    <div class="shadow-sm recipe-collection-block">
             @if (count($recipe_collections) == 0)
+                <h3 style="text-align: center;">Збірки Рецептів</h3>
                 @if (Auth::user()->user_id == $user_id)
-                    У вас ще немає збірок Рецептів
+                    <p style="text-align: center;">У вас ще немає збірок Рецептів</p>
                     <a href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Збірку</a> 
                 @else
-                    Цей користувач не має Збірок Рецептів, які ви можете переглянути
+                    <p style="text-align: center; margin-top:15vh">Цей користувач не має Збірок Рецептів, які ви можете переглянути</p>
                 @endif
             @else
-                @foreach ($recipe_collections as $recipe_collection)
-                <div class="recipe-collection-container">
-                    <div class="card-body shadow-sm recipe-collection">
-                        <h4>{{ $recipe_collection->name }}</h4>
-                        <img src="{{ asset($recipe_collection->img_path) }}" alt="Картинка збірки">
-                        <br>
-                        @if (isset($recipe_collection->description))
-                            <p class="left-align">{{ Illuminate\Support\Str::limit($recipe_collection->description, $limit = 120, $end = '...') }}</p>
-                        @else
-                            <p>Без опису</p>
-                            <br>
-                        @endif
-                        <!--спробувати різні значення довжини тексту-->
-                        <a href="{{ route('recipe_collections.show_recipes', [Auth::user()->user_id, $recipe_collection->recipe_collection_id]) }}">Переглянути</a>
+                <h3 style="text-align: center;margin-top:1vh;margin-left:9vw;">Збірки Рецептів <span><a class="btn btn-primary" href="{{ route('users.show_recipe_collections', $user_id) }}">Переглянути всі</a></span></h3>
+                <div class="recipe-collection-list">
+                    @foreach ($recipe_collections as $recipe_collection)
+                    <div class="card recipe-collection" style="max-width: 50%; height: 90% !important;margin-bottom:2vh; margin-top:0">
+                        <div class="row no-gutters" style="height: 100%; !important">
+                            <div class="col-6">
+                                <img class="card-img"src="{{ asset($recipe_collection->img_path) }}" alt="...">
+                            </div>
+                        
+                            <div class="col-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $recipe_collection->name }}</h5>
+                                    @if (isset($recipe_collection->description))
+                                        <p class="left-align card-text">{{ Illuminate\Support\Str::limit($recipe_collection->description, $limit = 35, $end = '...') }}</p>
+                                    @else
+                                        <p class="card-text" style="margin-top: 5vh;">Без опису</p>
+                                    @endif
+                                    <p class="card-text" style="margin-top:6vh;"><small class="text-muted">Востаннє оновлена {{ $recipe_collection->updated_at->format('d-m-Y H:i') }}</small></p>
+                                    <a class="btn btn-outline-secondary" style="float: right; margin-top: -1vh; font-size: 14px" href="{{ route('recipe_collections.show_recipes', [$user_id, $recipe_collection->recipe_collection_id]) }}">
+                                        Переглянути
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
-                <a href="{{ route('users.show_recipe_collections', $user_id) }}">Переглянути всі Збірки Рецептів</a>
             @endif
-        </div>
     </div>
 </div>
 @endsection

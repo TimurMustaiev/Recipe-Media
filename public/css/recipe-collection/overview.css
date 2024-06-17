@@ -1,0 +1,26 @@
+@import "bootstrap/scss/bootstrap";
+
+.body-container {
+    background-color: rgb(249, 245, 245);
+}
+
+.content {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%; 
+}
+
+.card-img {
+    height: 100%;
+    width: 100%;
+    border-top-right-radius: 0; !important
+}
+
+.recipe {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.recipes-container {
+    flex-direction: column;
+}

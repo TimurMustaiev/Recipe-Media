@@ -1,44 +1,68 @@
 body {
-  overflow: auto;
+  height: 100%;
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
 }
 
 header {
-  background-color: rgb(27, 117, 70);
-  height: 6vh;
+  background-color: black;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  z-index: 1;
 }
 
 .main-link {
   height: 100%;
-  /* background-color: rgb(11, 167, 97); */
-  /* background-image: linear-gradient(to right, rgb(42, 207, 133) 90%, rgb(93, 220, 163)); */
-  background-color: rgb(27, 117, 70);
-  color: white;
+  background-color: black;
   text-align: center;
-  font-size: 4vh;
+  display: flex;
+  align-items: center;
+  padding-left: 2vw;
 }
 
 .main-link a {
-  text-decoration: none;
   color: white;
+  text-decoration: none;
+  font-size: 2.5vh;
+}
+
+#show-main-page {
+  font-size: 4.5vh;
+  margin-right: 11%;
+}
+
+#show-recipes {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .user {
-  height: 100%;
-  background-color: rgb(27, 117, 70);
-  display: grid;
-  place-items: center;
-  font-size: 2.3vh;
-
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .user a {
+  font-size: 2.5vh;
   text-decoration: none;
 }
 
+#user-menu {
+  height: 80%;
+  margin-left: 10%;
+}
+
 .user-picture {
-  height: 5vh;
+  border: 1px solid gray;
+  height: 4vh;
+  width: 4vh;
+  object-fit: cover;
 
   border-radius: 50%;
 }
@@ -47,30 +71,30 @@ header {
   list-style-type: none;
 }
 
-/* .content {
-  background-color: rgb(148, 216, 186);
-} */
-
-.container-fluid {
+.body-container {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 0;
   padding: 0;
 }
 
-.header {
-  flex: 0 1; /* This means the header and footer will not grow or shrink */
-}
-.content {
-  flex: 1 1; /* This allows the content to grow and fill the remaining space */
-   /* Add this to ensure content can scroll if it exceeds the available space */
+.search-container {
+  text-align: center;
 }
 
 .search-form {
-  width: 60%;
+  height: 100%;
+  width: 100%;
 
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.search-form input {
+  width: 65%;
 }
 
 .search-form input, .search-form button {
@@ -79,4 +103,9 @@ header {
   margin-bottom: auto;
 
   border-radius: 0;
+}
+
+.content {
+  padding-top: 10vh;
+  background-color: rgb(249, 245, 245);
 }

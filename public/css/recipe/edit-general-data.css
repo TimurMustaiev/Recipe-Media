@@ -1,0 +1,23 @@
+.content {
+    text-align: center;
+    height: 100%;
+}
+
+.text-center, .form-container {
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container .card label {
+    float: left;
+    margin-left: 2%;
+}
+
+#submit-button {
+    width: 30%;
+}

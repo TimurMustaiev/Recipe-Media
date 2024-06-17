@@ -1,0 +1,28 @@
+.content {
+    min-height: 100vh;
+    width: 100%;
+}
+
+.card-group.col-11 {
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap:wrap;
+    justify-content: center;
+}
+
+.card.recipe-collection {
+    max-width: 15vw;
+    margin: 3%;
+    margin-top: 0.5vh;
+}
+
+.create-button-block {
+    height: 7vh;
+    width: 100%;
+    margin-top: 4.6vh;
+    text-align: center;
+}
+
+.card-img {
+    object-fit: cover;
+}

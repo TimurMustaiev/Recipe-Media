@@ -32,11 +32,11 @@ class UserController extends Controller
                               ->with('user_id', $user_id);
     }
 
-    public function edit_profile() {
+    public function edit_profile($user_id = null) {
         return view('profile/edit');
     }
 
-    public function update_profile(Request $request) {
+    public function update_profile(Request $request, $user_id = null) {
         $rules = ['nickname' => 'required',
                   'img' => ['nullable', 'image'],
                   'email' => ['required', 'string', 'email'],
