@@ -32,8 +32,10 @@
                     <button class="mt-3 btn btn-dark" type="button" onclick="addIngredient()" style="width:30%;">Додати</button>
                 </div>
                 <div id="entered_ingredients" class="mt-2 entered_ingredients">
+                </div>
+                <div class="error" style="color: red;margin-top:3vh;">
                     @error('ingredients_array')
-                        {{ $message }}
+                    {{ $message }}
                     @enderror
                 </div>
                 <div class="button-container">

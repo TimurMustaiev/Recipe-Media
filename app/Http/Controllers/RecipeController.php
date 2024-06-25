@@ -235,25 +235,33 @@ class RecipeController extends Controller
     }
 
     public function add_ingredient(Request $request, $recipe_id) {
-        //валідатор
-
         $recipe = Recipe::find($recipe_id);
  
-        $recipe->recipe_ingredients()->create(['name' => $request->get('recipe_ingredient'),
+        if($request->get('recipe_ingredient') != null && $request->get('amount') != null && $request->get('unit') != null) {
+            $recipe->recipe_ingredients()->create(['name' => $request->get('recipe_ingredient'),
                                                'amount' => $request->get('amount'),
                                                'unit' => $request->get('unit')]);
+        }
 
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
     }
 
     public function update_ingredient(Request $request, $recipe_id, $recipe_ingredient_id) {
-        //валідатор
         $recipe = Recipe::with('recipe_ingredients')->find($recipe_id);
+        $name = $request->get('recipe_ingredient');
+        $amount = $request->get('amount');
+        $unit = $request->get('unit');
 
         $recipe_ingredient = $recipe->recipe_ingredients->find($recipe_ingredient_id);
-        $recipe_ingredient->name = $request->get('recipe_ingredient');
-        $recipe_ingredient->amount = $request->get('amount');
-        $recipe_ingredient->unit = $request->get('unit');
+        if (isset($name)) {
+            $recipe_ingredient->name = $request->get('recipe_ingredient');
+        }
+        if (isset($amount)) {
+            $recipe_ingredient->amount = $request->get('amount');
+        }
+        if (isset($unit)) {
+            $recipe_ingredient->unit = $request->get('unit');
+        }
         $recipe_ingredient->save();
 
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));
@@ -269,11 +277,9 @@ class RecipeController extends Controller
     }
 
     public function add_step(Request $request, $recipe_id) {
-        //валідатор
-
         $recipe = Recipe::find($recipe_id);
         $ordinal_number = $request->get('ordinal_number');
-        $description = $request->get('description'); //?
+        $description = $request->get('description');
 
         if ($recipe->recipe_steps()->where('ordinal_number', $ordinal_number)->exists()) {
             foreach ($recipe->recipe_steps as $recipe_step) {
@@ -284,22 +290,26 @@ class RecipeController extends Controller
             }
         }
 
-        $recipe->recipe_steps()->create(['ordinal_number' => $ordinal_number,
-                                         'description' => $description]);
+        if(isset($description) && isset($ordinal_number)) {
+            $recipe->recipe_steps()->create(['ordinal_number' => $ordinal_number,
+                                             'description' => $description]);
+        }
 
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));                                
     }
 
     public function update_step(Request $request, $recipe_id, $recipe_step_id) {
-        //валідатор
-
         $ordinal_number = $request->get('ordinal_number');
         $description = $request->get('description');
         
         $recipe = Recipe::find($recipe_id);
         $recipe_step = $recipe->recipe_steps->find($recipe_step_id);
-        $recipe_step->ordinal_number = $ordinal_number;
-        $recipe_step->description = $description;
+        if (isset($ordinal_number)) {
+            $recipe_step->ordinal_number = $ordinal_number;
+        }
+        if (isset($description)) {
+            $recipe_step->description = $description;
+        }
         $recipe_step->save();
 
         return redirect(route('recipes.show', ['recipe_id' => $recipe_id, 'edit_mode' => true]));

@@ -62,8 +62,8 @@
             @if (count($recipe_collections) == 0)
                 <h3 style="text-align: center;">Збірки Рецептів</h3>
                 @if (Auth::user()->user_id == $user_id)
-                    <p style="text-align: center;">У вас ще немає збірок Рецептів</p>
-                    <a href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Збірку</a> 
+                    <p style="text-align: center; margin-top:8vh;">У вас ще немає збірок Рецептів</p>
+                    <a class="btn btn-primary" style="margin-left: 28vw;" href="{{ route('recipe_collections.create', Auth::user()->user_id) }}">Створити нову Збірку</a> 
                 @else
                     <p style="text-align: center; margin-top:15vh">Цей користувач не має Збірок Рецептів, які ви можете переглянути</p>
                 @endif

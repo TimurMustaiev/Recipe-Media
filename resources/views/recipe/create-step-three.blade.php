@@ -17,8 +17,10 @@
                     <button class="mt-3 btn btn-dark" type="button" onclick="addStep()" style="width:30%;">Додати</button>
                 </div>
                 <div id="entered_steps" class="entered_steps">
+                </div>
+                <div class="error" style="color: red;margin-top:3vh;">
                     @error('steps_array')
-                        {{ $message }}
+                    {{ $message }}
                     @enderror
                 </div>
                 <div class="button-container">
@@ -51,7 +53,7 @@
         var enteredSteps = document.getElementById('entered_steps');
         var stepContainer = document.createElement('div');
         stepContainer.classList.add('new-step-field');
-        stepContainer.innerHTML = `${stepCount} - ${description.substring(0, 20)}`;
+        stepContainer.innerHTML = `${stepCount} - ${description.substring(0, 50)}`;
         if(description.length >= 50) {
             stepContainer.innerHTML += '...';
         }

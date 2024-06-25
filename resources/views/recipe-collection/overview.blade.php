@@ -3,7 +3,7 @@
 @section('tab-title', 'Усі Рецепти Збірки')
 @section('page-content')
     <h2 style="text-align: center;">{{ $recipe_collection->name }}</h2>
-    <p style="margin-bottom:4vh;" style="text-align:center;" class="text-muted">{{ $recipe_collection->description }}</p>
+    <p style="margin-bottom:4vh;" class="text-muted">{{ $recipe_collection->description }}</p>
     @if (count($recipe_collection->recipes) > 0)
         <div class="recipes-container">
                 @foreach ($recipe_collection->recipes as $recipe)
@@ -14,11 +14,11 @@
                             </div>
                             <div class="col-6">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $recipe->name }}</h5>
-                                    <p class="card-text">{{ $recipe->meal_type }}</p>
-                                    <p class="left-align card-text">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 60, $end = '...') }}</p>
-                                    <p class="left-align card-text">Автор: {{ $recipe->user->nickname }}</p>
-                                    <p class="card-text"><small class="text-muted">Востаннє оновлений {{ $recipe->updated_at->format('d-m-Y H:i') }}</small></p>
+                                    <h5 class="card-title" style="text-align: left;">{{ $recipe->name }}</h5>
+                                    <p class="card-text" style="text-align: left;">{{ $recipe->meal_type }}</p>
+                                    <p class="left-align card-text" style="text-align: left;">{{ Illuminate\Support\Str::limit($recipe->description, $limit = 60, $end = '...') }}</p>
+                                    <p class="left-align card-text" style="text-align: left;">Автор: {{ $recipe->user->nickname }}</p>
+                                    <p class="card-text" style="text-align: left;"><small class="text-muted">Востаннє оновлений {{ $recipe->updated_at->format('d-m-Y H:i') }}</small></p>
                                     <a class="btn btn-sm btn-outline-secondary" style="float: right; margin-bottom: 4%;" href="{{ route('recipes.show', $recipe->recipe_id) }}">
                                         Переглянути
                                     </a>

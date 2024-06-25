@@ -103,7 +103,7 @@
                                         <option value="ч.л.">Чайна Ложка</option>
                                         <option value="шт.">Штука</option>
                                     </select>
-                                    <button class="mt-4 btn btn-primary" type="submit" style="width: 25%;margin-left:36%;">Додати</button>
+                                    <button class="mt-4 btn btn-primary" type="submit" style="width: 25%;margin-left:11.5vw;">Додати</button>
                                 </form>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                                                         <option value="ч.л." {{ $recipe_ingredient->unit == 'ч.л.' ? 'selected' : '' }}>Чайна Ложка</option>
                                                         <option value="шт." {{ $recipe_ingredient->unit == 'шт.' ? 'selected' : '' }}>Штука</option>
                                                     </select>
-                                                    <button class="mt-4 btn btn-primary" style="width: 25%;" type="submit">Змінити</button>
+                                                    <button class="mt-4 btn btn-primary" style="width: 25%;margin-left:11.5vw;" type="submit">Змінити</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -181,7 +181,6 @@
                                 <p style="width:15vw;">{{ $recipe_ingredient->name }} <strong>{{ $recipe_ingredient->amount }} {{ $recipe_ingredient->unit }}</strong></p>
                             @endif
                     @endforeach
-            <!--зробити коментар який пояснює скорочення в одиницях-->
             </div>
             <div class="steps-container">
                     @if (Request::has('edit_mode'))
@@ -202,7 +201,7 @@
                                         <input type="number" min="1" name="ordinal_number" id="ordinal_number" class="form-control">
                                         <label class="mt-2" style="float: left; margin-left: 2%;" for="description">Опис</label>
                                         <textarea rows="4" id="description" name="description" class="form-control"></textarea>
-                                        <button class="mt-4 btn btn-primary" style="width:25%;" type="submit">Додати</button>
+                                        <button class="mt-4 btn btn-primary" style="width:25%;margin-left:11.5vw;" type="submit">Додати</button>
                                     </form>
                                 </div>
                             </div>
@@ -234,7 +233,7 @@
                                                 <input class="form-control" type="number" min="1" name="ordinal_number" value="{{ $recipe_step->ordinal_number }}">
                                                 <label class="mt-2" style="float: left; margin-left: 2%;" for="description">Опис</label>
                                                 <textarea rows="4" id="description" name="description" class="form-control">{{ $recipe_step->description }}</textarea>
-                                                <button class="mt-4 btn btn-primary" style="width:25%" type="submit">Змінити</button>
+                                                <button class="mt-4 btn btn-primary" style="width:25%;margin-left:11.5vw;" type="submit">Змінити</button>
                                             </form>
                                         </div>
                                     </div>
@@ -355,29 +354,23 @@
                 <div class="modal-content">
                     <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">Помилка</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                     {{ session('add_to_collection_error') }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
                     </div>
                 </div>
             </div>
         </div>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Delayed display of the modal after 1 second (adjust as needed)
-                setTimeout(function() {
-                    var modal = document.getElementById('addToCollectionErrorModal');
-                    if (modal) {
-                        // Add a class to the modal to trigger animation
-                        modal.classList.add('show');
-                        modal.style.display = 'block';
-                    }
-                }, 500); // 1000 milliseconds = 1 second
+                            $(document).ready(function() {
+                                // Show the modal
+                                $('#addToCollectionErrorModal').modal('show');
+
+                                setTimeout(function() {
+                                    $('#addToCollectionErrorModal').modal('hide');
+                                }, 2000);
+                            });
             });
         </script>
         @endif
